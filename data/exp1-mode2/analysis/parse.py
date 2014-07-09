@@ -30,48 +30,6 @@ class MyReader(EyelinkAscFolderReader):
 
 	"""An experiment-specific reader to parse the EyeLink data files."""
 
-	def __init__(self):
-
-		self.trialId = 0
-		EyelinkAscFolderReader.__init__(self, blinkReconstruct=True, maxN=None,
-			maxTrialId=None)
-
-	def startTrial(self, l):
-
-		"""
-		desc:
-			Detects the start of a trial.
-
-		arguments:
-			l:
-				desc:	A whitespace-splitted line of data.
-				type:	list
-
-		returns:
-			The trial id or None if l does not correspond to a trial start.
-		"""
-
-		if 'start_selection_loop' in l:
-			return self.trialId
-		return None
-
-	def endTrial(self, l):
-
-		"""
-		desc:
-			Detects the end of a trial.
-
-		arguments:
-			l:
-				desc:	A whitespace-splitted line of data.
-				type:	list
-
-		returns:
-			True if l corresponds to the start of a trial, False otherwise.
-		"""
-
-		return 'end_selection_loop' in l
-
 	def initTrial(self, trialDict):
 
 		"""
@@ -86,6 +44,10 @@ class MyReader(EyelinkAscFolderReader):
 
 		self.startTime = None
 		self.endTime = None
+		self.endInvertTime = []
+		self.endAdaptationTime = []
+		self.endCollectionTime = []
+		self.endRoundTime = []
 
 	def finishTrial(self, trialDict):
 
@@ -104,7 +66,10 @@ class MyReader(EyelinkAscFolderReader):
 
 		trialDict['rt'] = self.endTime - self.startTime
 		trialDict['correct'] = self.correct # Get the correct correct
-		self.trialId += 1
+		trialDict['endInvertTime'] = np.mean(self.endInvertTime)
+		trialDict['endAdaptationTime'] = np.mean(self.endAdaptationTime)
+		trialDict['endCollectionTime'] = np.mean(self.endCollectionTime)
+		trialDict['endRoundTime'] = np.mean(self.endRoundTime)
 
 	def parseLine(self, trialDict, l):
 
@@ -131,6 +96,7 @@ class MyReader(EyelinkAscFolderReader):
 		# Collect pupil trace
 		if 'start_round' in l:
 			self.tracePhase = 'dummy'
+			self.startRoundTime = l[1]
 		# Determine whether the target is bright or dark
 		if self.tracePhase != None and 'item' in l:
 			if 'id="%s"' % trialDict['target'] in l:
@@ -140,13 +106,22 @@ class MyReader(EyelinkAscFolderReader):
 					self.phaseType = 'dark'
 				else:
 					raise Exception('Incorrect brightness!')
+		if 'end_invert' in l:
+			self.endInvertTime.append(l[1] - self.startRoundTime)
+		if 'end_adaptation' in l:
+			self.endAdaptationTime.append(l[1] - self.startRoundTime)
+		if 'end_collection' in l:
+			self.endCollectionTime.append(l[1] - self.startRoundTime)
 		if 'end_round' in l:
 			a = np.array(self.traceDict['dummy'], dtype=float)
 			a[:,2] = tk.blinkReconstruct(a[:,2])
-			np.save('traces/%s-%04d.npy' % (self.phaseType, self.trialId), a)
+			path = 'traces/%s-%04d-%s.npy' % (trialDict['file'][4:-5],
+				trialDict['trialId'], self.phaseType)
+			np.save(path, a)
 			del self.traceDict['dummy']
 			self.tracePhase = None
+			self.endRoundTime.append(l[1] - self.startRoundTime)
 
 @cachedDataMatrix
 def getDataMatrix():
-	return MyReader().dataMatrix()
+	return MyReader(blinkReconstruct=True).dataMatrix()
