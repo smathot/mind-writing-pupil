@@ -95,8 +95,11 @@ class MyReader(EyelinkAscFolderReader):
 		# MSG	7072763 start_round 0
 		if 'start_round' in l and l[3] == 0:
 			self.startTime = l[1]
+		# For Exp 1:
 		# MSG	7093294 var correct 1
-		if 'correct' in l and l[4] in (0, 1):
+		# For Exp 2+:
+		# MSG	7093294 var correct_selection 1
+		if ('correct' in l or 'correct_selection' in l) and l[4] in (0, 1):
 			self.endTime = l[1]
 			self.correct = l[4]
 		# Collect pupil trace

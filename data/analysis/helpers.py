@@ -147,9 +147,14 @@ def evolution(dm):
 
 	import pickle
 
+	if 'likelihoodThr' in dm:
+		maxLikelihood = dm['likelihoodThr'][0]
+	else:
+		# In Exp 1 this wasn't logged yet.
+		maxLikelihood = 2
 	steps = 100
 	maxRnd = 100
-	aThr = np.linspace(1.15, 3, steps)
+	aThr = np.linspace(1.05, maxLikelihood, steps)
 	aAcc = np.empty((len(dm), steps))
 	aRnd = np.empty((len(dm), steps))
 	aRat = np.empty((len(dm), maxRnd))
@@ -206,7 +211,7 @@ def evolution(dm):
 	Plot.save('evolution', show=show)
 
 @validate
-def behavior(dm):
+def performance(dm, lDv):
 
 	"""
 	desc:
@@ -216,7 +221,41 @@ def behavior(dm):
 		dm:
 			desc:	A DataMatrix.
 			type:	DataMatrix
+		lDv:
+			desc:	A list of dependent variables to split performance by.
+			type:	list
 	"""
 
-	print dm.collapse(['subject_nr', 'mode2'], vName='rt')
-	print dm.collapse(['subject_nr', 'mode2'], vName='rounds')
+	print dm.collapse(['subject_nr']+lDv, vName='rt')
+	print dm.collapse(['subject_nr']+lDv, vName='rounds')
+
+@validate
+def performanceMode2(dm):
+
+	"""
+	desc:
+		Analyzes accuracy and response times per mode 2. For Exp 1.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	performance(dm, ['mode2'])
+
+@validate
+def performanceEcc(dm):
+
+	"""
+	desc:
+		Analyzes accuracy and response times per ecc. For Exp 2.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	performance(dm, ['ecc'])
+
