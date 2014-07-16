@@ -21,6 +21,7 @@ from exparser.EyelinkAscFolderReader import EyelinkAscFolderReader
 from exparser.Cache import cachedDataMatrix
 from exparser import TraceKit as tk
 import numpy as np
+import pickle
 
 # Display center
 xc = 512
@@ -48,6 +49,7 @@ class MyReader(EyelinkAscFolderReader):
 		self.endAdaptationTime = []
 		self.endCollectionTime = []
 		self.endRoundTime = []
+		self.likelihoodTraces = {}
 
 	def finishTrial(self, trialDict):
 
@@ -70,6 +72,10 @@ class MyReader(EyelinkAscFolderReader):
 		trialDict['endAdaptationTime'] = np.mean(self.endAdaptationTime)
 		trialDict['endCollectionTime'] = np.mean(self.endCollectionTime)
 		trialDict['endRoundTime'] = np.mean(self.endRoundTime)
+		path = 'likelihood/%s-%.4d.pickle' % (trialDict['file'],
+			trialDict['trialId'])
+		trialDict['__likelihood__'] = path
+		pickle.dump(self.likelihoodTraces, open(path, 'w'))
 
 	def parseLine(self, trialDict, l):
 
@@ -113,14 +119,37 @@ class MyReader(EyelinkAscFolderReader):
 		if 'end_collection' in l:
 			self.endCollectionTime.append(l[1] - self.startRoundTime)
 		if 'end_round' in l:
-			a = np.array(self.traceDict['dummy'], dtype=float)
-			a[:,2] = tk.blinkReconstruct(a[:,2])
-			path = 'traces/%s-%04d-%s.npy' % (trialDict['file'][4:-5],
-				trialDict['trialId'], self.phaseType)
-			np.save(path, a)
-			del self.traceDict['dummy']
+			if 'dummy' in self.traceDict:
+				a = np.array(self.traceDict['dummy'], dtype=float)
+				a[:,2] = tk.blinkReconstruct(a[:,2])
+				path = 'traces/%s-%04d-%s.npy' % (trialDict['file'][4:-5],
+					trialDict['trialId'], self.phaseType)
+				np.save(path, a)
+				del self.traceDict['dummy']
+			else:
+				print('Warning: No trace collected!')
 			self.tracePhase = None
 			self.endRoundTime.append(l[1] - self.startRoundTime)
+		# Collect item information and likelihood ratios
+		# MSG	1806804 item id="B" status=init likelihood=1 ecc=310
+		# angle=-0.785398163397 size=64 brightness=1 color=green opacity=0.5
+		# x=219.203102168
+		if self.tracePhase != None:
+			# Process item
+			if len(l) > 2 and l[2] == 'item':
+				_dict = {}
+				for s in l[3:]:
+					_l = s.split('=')
+					if len(_l) != 2:
+						continue
+					_dict[_l[0]] = _l[1].strip('"')
+				if _dict['id'] == trialDict['target']:
+					_id = 'target'
+				else:
+					_id = _dict['id']
+				if _id not in self.likelihoodTraces:
+					self.likelihoodTraces[_id] = []
+				self.likelihoodTraces[_id].append(_dict['likelihood'])
 
 @cachedDataMatrix
 def getDataMatrix():

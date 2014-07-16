@@ -73,7 +73,7 @@ def getTraceAvg(traceLen=1350, filters=[]):
 	return np.array( [nanmean(c, axis=0), nanstd(c, axis=0)] )
 
 @validate
-def pupilPlot(dm):
+def pupilPlot(dm, filters=[]):
 
 	"""
 	desc:
@@ -84,11 +84,17 @@ def pupilPlot(dm):
 		dm:
 			desc:	A DataMatrix.
 			type:	DataMatrix
+
+	keywords:
+		filters:
+			desc:	Filters
+			type:	list
 	"""
 
+	assert(dm.count('subject_nr') == 1)
 	traceLen = dm['endCollectionTime'].mean()
-	mBright = getTraceAvg(traceLen=traceLen, filters=['bright'])
-	mDark = getTraceAvg(traceLen=traceLen, filters=['dark'])
+	mBright = getTraceAvg(traceLen=traceLen, filters=['bright']+filters)
+	mDark = getTraceAvg(traceLen=traceLen, filters=['dark']+filters)
 	xData = np.linspace(0, mBright.shape[1]-1, mBright.shape[1])
 	plt.fill_between(xData, mBright[0]-mBright[1], mBright[0]+mBright[1], alpha=.25,
 		color=brightColor)
@@ -101,7 +107,103 @@ def pupilPlot(dm):
 	plt.xlabel('Time since round start (ms)')
 	plt.ylabel('Mean pupil area')
 	plt.xlim(0, traceLen)
+	#plt.show()
+
+@validate
+def pupilPlotSubject(dm):
+
+	"""
+	desc:
+		Creates the overall pupil-size plot for switch-to-bright and
+		switch-to-dark rounds, separately for each subject.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	i = 0
+	for _dm in dm.group('subject_nr'):
+		plt.subplot(1, dm.count('subject_nr'), i)
+		f = 'P%02d'%_dm['subject_nr'][0]
+		print f
+		pupilPlot(_dm, filters=[f])
+		i += 1
 	plt.show()
+
+@validate
+def evolution(dm):
+
+	"""
+	desc:
+		Determines accuracy and speed as a function of threshold.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	import pickle
+
+	steps = 100
+	maxRnd = 100
+	aThr = np.linspace(1.15, 3, steps)
+	aAcc = np.empty((len(dm), steps))
+	aRnd = np.empty((len(dm), steps))
+	aRat = np.empty((len(dm), maxRnd))
+	aRat[:] = np.nan
+	for i in dm.range():
+		print 'Trial %d' % i
+		d = pickle.load(open(dm['__likelihood__'][i]))
+		# Create an array with the mean likelihood
+		l = []
+		for _id in d:
+			l.append(d[_id])
+		a = np.array(l, dtype=float)
+		m = np.mean(a, axis=0)
+		# Array with target likelihood
+		t = np.array(d['target'], dtype=float)
+		# Array with the mean distractor likelihood
+		for _id in d:
+			if _id != 'target':
+				dist = np.array(d[_id], dtype=float)
+			a = np.array(d[_id], dtype=float)
+		ratio = t / dist
+		if len(ratio) >= maxRnd:
+			aRat[i] = ratio[:maxRnd]
+		else:
+			aRat[i,:len(ratio)] = ratio
+		for j in range(steps):
+			thr = aThr[j]
+			iHit = np.where(ratio > thr)[0]
+			rnd = iHit[0]
+			iErr = np.where(ratio < 1/thr)[0]
+			correct = 1
+			if len(iErr) > 0:
+				if iErr[0] < iHit[0]:
+					correct = 0
+					rnd = iErr[0]
+			aAcc[i,j] = correct
+			aRnd[i,j] = rnd
+	Plot.new()
+	plt.subplot(311)
+	plt.plot(np.arange(maxRnd), np.swapaxes(aRat, 0, 1), alpha=.1,
+		color=gray[1])
+	plt.plot(np.arange(maxRnd), nanmean(aRat, axis=0), color=blue[1])
+	plt.xlabel('Round')
+	plt.ylabel('Ratio')
+	plt.subplot(312)
+	plt.plot(aThr, aAcc.mean(axis=0), color=blue[1])
+	plt.xlabel('Ratio threshold')
+	plt.ylabel('Accuracy')
+	plt.subplot(313)
+	plt.plot(aThr, np.swapaxes(aRnd, 0, 1), alpha=.1, color=gray[1])
+	plt.plot(aThr, aRnd.mean(axis=0), color=blue[1])
+	plt.xlabel('Ratio threshold')
+	plt.ylabel('Rounds until decision')
+	Plot.save('evolution', show=show)
 
 @validate
 def behavior(dm):
@@ -116,5 +218,5 @@ def behavior(dm):
 			type:	DataMatrix
 	"""
 
-	print dm.collapse(['mode2'], vName='rt')
-	print dm.collapse(['mode2'], vName='rounds')
+	print dm.collapse(['subject_nr', 'mode2'], vName='rt')
+	print dm.collapse(['subject_nr', 'mode2'], vName='rounds')
