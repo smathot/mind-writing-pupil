@@ -17,15 +17,19 @@ You should have received a copy of the GNU General Public License
 along with P0014.1.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import sys
+from matplotlib import pyplot as plt
+from exparser import Plot
 from exparser.EyelinkAscFolderReader import EyelinkAscFolderReader
 from exparser.Cache import cachedDataMatrix
 from exparser import TraceKit as tk
+from exparser.TangoPalette import *
 import numpy as np
 import pickle
 
 # Display center
-xc = 512
-yc = 384
+xc = 1280/2
+yc = 1024/2
 
 class MyReader(EyelinkAscFolderReader):
 
@@ -51,6 +55,10 @@ class MyReader(EyelinkAscFolderReader):
 		self.endRoundTime = []
 		self.roundId = 0
 		self.likelihoodTraces = {}
+		self.active = False
+		self.fixList = []
+		trialDict['maxFixErr'] = 0
+		trialDict['nFixLost'] = 0
 
 	def finishTrial(self, trialDict):
 
@@ -67,6 +75,7 @@ class MyReader(EyelinkAscFolderReader):
 				type:	list
 		"""
 
+		print 'nFixLost: %(nFixLost)d, maxFixErr = %(maxFixErr).2f' % trialDict
 		trialDict['rt'] = self.endTime - self.startTime
 		trialDict['correct'] = self.correct # Get the correct correct
 		trialDict['endInvertTime'] = np.mean(self.endInvertTime)
@@ -77,6 +86,43 @@ class MyReader(EyelinkAscFolderReader):
 			trialDict['trialId'])
 		trialDict['__likelihood__'] = path
 		pickle.dump(self.likelihoodTraces, open(path, 'w'))
+
+		# Determine the mean vector of the fixations
+		fax = np.mean([xy[0] for xy in self.fixList])
+		fay = np.mean([xy[1] for xy in self.fixList])
+		fdx = fax - xc
+		fdy = fay - yc
+		fa = np.degrees(np.arctan2(fdy, fdx))
+		fr = np.sqrt(fdx**2 + fdy**2)
+		# Determine the vector of the target
+		tx = trialDict['targetX']
+		ty = trialDict['targetY']
+		tdx = tx - xc
+		tdy = ty - yc
+		ta = np.degrees(np.arctan2(tdy, tdx))
+		tr = np.sqrt(tdx**2 + tdy**2)
+		# Determine the vector error
+		errA = ta-fa
+		if errA < 0:
+			errA += 360
+		trialDict['errA'] = errA
+		trialDict['errR'] = fr
+		s = 'Vector: r = %.2f, d(a) = %.2f' % (fr, errA)
+		print s
+		if '--plot' in sys.argv:
+			Plot.new()
+			plt.title(s)
+			plt.xlim(0, 1280)
+			plt.ylim(0, 1024)
+			plt.axvline(xc, linestyle='--', color='black')
+			plt.axhline(yc, linestyle='--', color='black')
+			for x, y in self.fixList:
+				plt.plot(x, y, '.', color=blue[1])
+			plt.plot(tx, ty, 'o', color=orange[1])
+			plt.plot([xc, xc+fdx], [yc, yc+fdy], color=blue[1])
+			plt.plot([xc, xc+tdx], [yc, yc+tdy], color=orange[1])
+			plotName = '%s-%d' % (trialDict['file'], trialDict['trialId'])
+			Plot.save(plotName)
 
 	def parseLine(self, trialDict, l):
 
@@ -93,17 +139,61 @@ class MyReader(EyelinkAscFolderReader):
 				type:	list
 		"""
 
-		# MSG	7072763 start_round 0
+		# The active period is the moment from the first round until the winner
+		# is announced. This way we don't count the extra time taken by the
+		# preview and end animation.
 		if 'start_round' in l and l[3] == 0:
+			self.active = True
 			self.startTime = l[1]
+		if 'status=winner' in l:
+			self.active = False
+			self.endTime = l[1]
+		# Check for check fixation during the active period.
+		if self.active:
+			fix = self.toFixation(l)
+			if fix != None:
+				fixErr = np.sqrt( (fix['x']-xc)**2 + (fix['y']-yc)**2 )
+				trialDict['maxFixErr'] = max(trialDict['maxFixErr'], fixErr)
+				self.fixList.append( (fix['x'], fix['y']) )
+			if 'fixation_lost' in l:
+				trialDict['nFixLost'] += 1
+		# Get target coordinates
+		# MSG	18895724 item id="B" status=init likelihood=1 ecc=375
+		# angle=0.785398163397 size=99 brightness=-1 color=green opacity=0.5
+		# x=265.165042945 y=265.16504
+		if 'target' in trialDict and ('id="%s"' % trialDict['target']) in l:
+			if 'targetX' not in trialDict:
+				# The x and y coordinates are sometimes chopped off, because the
+				# logging string is too long. Therefore, we recalculate them
+				# from the radius and eccentricity.
+				for i in l:
+					if type(i) != str:
+						continue
+					if 'ecc' in i:
+						r = float(i[4:])
+					if 'angle' in i:
+						a = float(i[6:])
+				x = np.cos(a) * r
+				y = np.sin(a) * r
+				# If possible, doubcheck the coordinates for strings that have
+				# not been chopped off.
+				try:
+					_x = float(l[-2][2:])
+					_y = float(l[-1][2:])
+					assert(int(_x) == int(x))
+					assert(int(_y) == int(y))
+				except:
+					print 'Failed to verify'
+				trialDict['targetX'] = x
+				trialDict['targetY'] = y
 		# For Exp 1:
 		# MSG	7093294 var correct 1
 		# For Exp 2+:
 		# MSG	7093294 var correct_selection 1
 		if ('correct' in l or 'correct_selection' in l) and l[4] in (0, 1):
-			self.endTime = l[1]
 			self.correct = l[4]
 		# Collect pupil trace
+		# MSG	18625682 start_round 0
 		if 'start_round' in l:
 			self.tracePhase = 'dummy'
 			self.startRoundTime = l[1]
@@ -129,7 +219,6 @@ class MyReader(EyelinkAscFolderReader):
 				path = 'traces/%s-%s-%04d-%04d-%s.npy' \
 					% (trialDict['file'][4:-5], trialDict['file'][-5:-4],
 					trialDict['trialId'], self.roundId, self.phaseType)
-				print path
 				np.save(path, a)
 				del self.traceDict['dummy']
 			else:

@@ -21,6 +21,7 @@ import os
 import sys
 from exparser import TraceKit as tk
 from exparser import Plot
+from exparser import Math
 from exparser.TangoPalette import *
 from exparser.Cache import cachedDataMatrix
 from exparser.PivotMatrix import PivotMatrix
@@ -307,3 +308,23 @@ def performanceEcc(dm):
 	"""
 
 	performance(dm, ['ecc'])
+
+@validate
+def fixation(dm):
+
+	"""
+	desc:
+		Analyzes fixation stability.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	Plot.new()
+	a, r = Math.angleMean(np.radians(dm['errA']), dm['errR'])
+	print a, r
+	plt.polar(np.radians(dm['errA']), dm['errR'], '.')
+	plt.polar([0,a], [0, r], '-', color='red')
+	Plot.save('fixation', show=True)
