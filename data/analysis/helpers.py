@@ -33,20 +33,29 @@ import numpy as np
 show = '--silent' not in sys.argv
 brightColor = orange[1]
 darkColor = blue[1]
+rndRange = range(100)
 
 @validate
-def getTraceAvg(traceLen=1350, filters=[]):
+def getTraceAvg(dm, traceLen=1350, rnd=rndRange, phaseTypes=['bright', 'dark']):
 
 	"""
 	desc:
 		Gets the average pupil-size trace for a selection of trials.
 
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+
 	keywords:
 		traceLen:
 			desc:	The length of the output trace.
-			typee:	int
-		filters:
-			desc:	A list of words that should be part of the trace filename.
+			type:	int
+		rnd:
+			desc:	A list of round numbers to be included.
+			type:	list
+		phaseTypes:
+			desc:	A list of phase types, which can be bright or dark.
 			type:	list
 
 	returns:
@@ -54,26 +63,26 @@ def getTraceAvg(traceLen=1350, filters=[]):
 		type:	ndarray
 	"""
 
-	i = 0
 	l = []
-	for path in os.listdir('traces'):
-		process = True
-		for _filter in filters:
-			if _filter not in path:
-				process = False
-				break
-		if not process:
-			continue
-		a = np.load('traces/%s' % path)[:,2][:traceLen]
-		b = np.empty(traceLen)
-		b[:] = np.nan
-		b[:len(a)] = a
-		l.append(b)
+	for i in dm.range():
+		for rnd in rndRange:
+			for phaseType in phaseTypes:
+				path = 'traces/%s-%s-%04d-%04d-%s.npy' \
+					% (dm['file'][i][4:-5], dm['file'][i][-5:-4],
+					dm['trialId'][i], rnd, phaseType)
+				if not os.path.exists(path):
+					continue
+				print path
+				a = np.load(path)[:,2][:traceLen]
+				b = np.empty(traceLen)
+				b[:] = np.nan
+				b[:len(a)] = a
+				l.append(b)
 	c = np.array(l)
 	return np.array( [nanmean(c, axis=0), nanstd(c, axis=0)] )
 
 @validate
-def pupilPlot(dm, filters=[]):
+def pupilPlot(dm):
 
 	"""
 	desc:
@@ -84,20 +93,15 @@ def pupilPlot(dm, filters=[]):
 		dm:
 			desc:	A DataMatrix.
 			type:	DataMatrix
-
-	keywords:
-		filters:
-			desc:	Filters
-			type:	list
 	"""
 
 	assert(dm.count('subject_nr') == 1)
-	traceLen = dm['endCollectionTime'].mean()
-	mBright = getTraceAvg(traceLen=traceLen, filters=['bright']+filters)
-	mDark = getTraceAvg(traceLen=traceLen, filters=['dark']+filters)
+	traceLen = int(dm['endCollectionTime'].mean())
+	mBright = getTraceAvg(dm, traceLen=traceLen, phaseTypes=['bright'])
+	mDark = getTraceAvg(dm, traceLen=traceLen, phaseTypes=['dark'])
 	xData = np.linspace(0, mBright.shape[1]-1, mBright.shape[1])
-	plt.fill_between(xData, mBright[0]-mBright[1], mBright[0]+mBright[1], alpha=.25,
-		color=brightColor)
+	plt.fill_between(xData, mBright[0]-mBright[1], mBright[0]+mBright[1],
+		alpha=.25, color=brightColor)
 	plt.fill_between(xData, mDark[0]-mDark[1], mDark[0]+mDark[1], alpha=.25,
 		color=darkColor)
 	plt.plot(mBright[0], color=brightColor)
@@ -107,7 +111,6 @@ def pupilPlot(dm, filters=[]):
 	plt.xlabel('Time since round start (ms)')
 	plt.ylabel('Mean pupil area')
 	plt.xlim(0, traceLen)
-	#plt.show()
 
 @validate
 def pupilPlotSubject(dm):
@@ -126,11 +129,34 @@ def pupilPlotSubject(dm):
 	i = 0
 	for _dm in dm.group('subject_nr'):
 		plt.subplot(1, dm.count('subject_nr'), i)
-		f = 'P%02d'%_dm['subject_nr'][0]
-		print f
-		pupilPlot(_dm, filters=[f])
+		pupilPlot(_dm)
 		i += 1
-	plt.show()
+	Plot.save('pupilPlotSubject', show=show)
+
+@validate
+def pupilPlotEcc(dm):
+
+	"""
+	desc:
+		Creates the overall pupil-size plot for switch-to-bright and
+		switch-to-dark rounds, separately for each subject.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	i = 1
+	for ecc in dm.unique('ecc'):
+		for subject_nr in dm.unique('subject_nr'):
+			_dm = dm.select('ecc == %d' % ecc) \
+				.select('subject_nr == %s' % subject_nr)
+			plt.subplot(dm.count('ecc'), dm.count('subject_nr'), i)
+			plt.title('%d - %d' % (subject_nr, ecc))
+			pupilPlot(_dm)
+			i += 1
+	Plot.save('pupilPlotEcc', show=show)
 
 @validate
 def evolution(dm):
@@ -183,13 +209,16 @@ def evolution(dm):
 		for j in range(steps):
 			thr = aThr[j]
 			iHit = np.where(ratio > thr)[0]
-			rnd = iHit[0]
 			iErr = np.where(ratio < 1/thr)[0]
-			correct = 1
-			if len(iErr) > 0:
-				if iErr[0] < iHit[0]:
-					correct = 0
-					rnd = iErr[0]
+			if len(iHit) == 0:
+				correct = 0
+				rnd = iErr[0]
+			elif len(iErr) > 0 and iErr[0] < iHit[0]:
+				correct = 0
+				rnd = iErr[0]
+			else:
+				correct = 1
+				rnd = iHit[0]
 			aAcc[i,j] = correct
 			aRnd[i,j] = rnd
 	Plot.new()
@@ -215,7 +244,8 @@ def performance(dm, lDv):
 
 	"""
 	desc:
-		Analyzes accuracy and response times.
+		Analyzes accuracy and response times as a function of specified
+		dependent variables.
 
 	arguments:
 		dm:
@@ -226,8 +256,27 @@ def performance(dm, lDv):
 			type:	list
 	"""
 
-	print dm.collapse(['subject_nr']+lDv, vName='rt')
-	print dm.collapse(['subject_nr']+lDv, vName='rounds')
+	cm = dm.select('correct == 0').collapse(['subject_nr']+lDv, vName='correct')
+	cm.save('output/performance.n_error.subject_nr.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(['subject_nr']+lDv, vName='correct')
+	cm.save('output/performance.acc.subject_nr.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(lDv, vName='correct')
+	cm.save('output/performance.acc.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(['subject_nr']+lDv, vName='rt')
+	cm.save('output/performance.rt.subject_nr.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(lDv, vName='rt')
+	cm.save('output/performance.rt.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(['subject_nr']+lDv, vName='rounds')
+	cm.save('output/performance.rounds.subject_nr.%s.csv' % ('.'.join(lDv)))
+	print cm
+	cm = dm.collapse(lDv, vName='rounds')
+	cm.save('output/performance.rounds.%s.csv' % ('.'.join(lDv)))
+	print cm
 
 @validate
 def performanceMode2(dm):
@@ -258,4 +307,3 @@ def performanceEcc(dm):
 	"""
 
 	performance(dm, ['ecc'])
-

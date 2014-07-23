@@ -49,6 +49,7 @@ class MyReader(EyelinkAscFolderReader):
 		self.endAdaptationTime = []
 		self.endCollectionTime = []
 		self.endRoundTime = []
+		self.roundId = 0
 		self.likelihoodTraces = {}
 
 	def finishTrial(self, trialDict):
@@ -125,14 +126,17 @@ class MyReader(EyelinkAscFolderReader):
 			if 'dummy' in self.traceDict:
 				a = np.array(self.traceDict['dummy'], dtype=float)
 				a[:,2] = tk.blinkReconstruct(a[:,2])
-				path = 'traces/%s-%04d-%s.npy' % (trialDict['file'][4:-5],
-					trialDict['trialId'], self.phaseType)
+				path = 'traces/%s-%s-%04d-%04d-%s.npy' \
+					% (trialDict['file'][4:-5], trialDict['file'][-5:-4],
+					trialDict['trialId'], self.roundId, self.phaseType)
+				print path
 				np.save(path, a)
 				del self.traceDict['dummy']
 			else:
 				print('Warning: No trace collected!')
 			self.tracePhase = None
 			self.endRoundTime.append(l[1] - self.startRoundTime)
+			self.roundId += 1
 		# Collect item information and likelihood ratios
 		# MSG	1806804 item id="B" status=init likelihood=1 ecc=310
 		# angle=-0.785398163397 size=64 brightness=1 color=green opacity=0.5
