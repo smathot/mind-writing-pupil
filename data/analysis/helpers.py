@@ -160,6 +160,31 @@ def pupilPlotEcc(dm):
 	Plot.save('pupilPlotEcc', show=show)
 
 @validate
+def pupilPlotSize(dm):
+
+	"""
+	desc:
+		Creates the overall pupil-size plot for switch-to-bright and
+		switch-to-dark rounds, separately for each subject.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	i = 1
+	for size in dm.unique('size'):
+		for subject_nr in dm.unique('subject_nr'):
+			_dm = dm.select('size == %d' % size) \
+				.select('subject_nr == %s' % subject_nr)
+			plt.subplot(dm.count('size'), dm.count('subject_nr'), i)
+			plt.title('%d - %d' % (subject_nr, size))
+			pupilPlot(_dm)
+			i += 1
+	Plot.save('pupilPlotSize', show=show)
+
+@validate
 def evolution(dm):
 
 	"""
@@ -174,7 +199,7 @@ def evolution(dm):
 
 	import pickle
 
-	if 'likelihoodThr' in dm:
+	if 'likelihoodThr' in dm.columns():
 		maxLikelihood = dm['likelihoodThr'][0]
 	else:
 		# In Exp 1 this wasn't logged yet.
@@ -209,8 +234,8 @@ def evolution(dm):
 			aRat[i,:len(ratio)] = ratio
 		for j in range(steps):
 			thr = aThr[j]
-			iHit = np.where(ratio > thr)[0]
-			iErr = np.where(ratio < 1/thr)[0]
+			iHit = np.where(ratio >= thr)[0]
+			iErr = np.where(ratio <= 1/thr)[0]
 			if len(iHit) == 0:
 				correct = 0
 				rnd = iErr[0]
@@ -310,6 +335,21 @@ def performanceEcc(dm):
 	performance(dm, ['ecc'])
 
 @validate
+def performanceSize(dm):
+
+	"""
+	desc:
+		Analyzes accuracy and response times per ecc. For Exp 3.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	performance(dm, ['size'])
+
+@validate
 def fixation(dm):
 
 	"""
@@ -323,12 +363,12 @@ def fixation(dm):
 	"""
 
 	Plot.new()
-	plt.subplot(211)
+	plt.subplot(211, polar=True)
 	a, r = Math.angleMean(np.radians(dm['errA']), dm['errR'])
-	plt.polar(np.radians(dm['errA']), dm['errR'], '.', color=blue[1])
+	plt.polar(np.radians(dm['errA']), dm['errR'], ',', color=blue[1])
 	plt.polar([0,a], [0, r], '-', color=orange[1])
 
-	plt.subplot(212)
+	plt.subplot(212, polar=True)
 	stepSize = 15
 	aData = []
 	rData = []
