@@ -323,8 +323,24 @@ def fixation(dm):
 	"""
 
 	Plot.new()
+	plt.subplot(211)
 	a, r = Math.angleMean(np.radians(dm['errA']), dm['errR'])
-	print a, r
-	plt.polar(np.radians(dm['errA']), dm['errR'], '.')
-	plt.polar([0,a], [0, r], '-', color='red')
+	plt.polar(np.radians(dm['errA']), dm['errR'], '.', color=blue[1])
+	plt.polar([0,a], [0, r], '-', color=orange[1])
+
+	plt.subplot(212)
+	stepSize = 15
+	aData = []
+	rData = []
+	for a in range(0, 360, stepSize):
+		_dm = dm.select('errA >= %d' % a, verbose=False)
+		_dm = _dm.select('errA < %d' % (a+stepSize), verbose=False)
+		rnd = _dm['rounds'].mean()
+		print('a = %d, N = %d, rnd = %.2f' % (a, len(_dm), rnd))
+		aData.append(np.radians(a+stepSize/2))
+		rData.append(rnd)
+	plt.polar(aData, rData, 'o-', color=orange[1])
 	Plot.save('fixation', show=True)
+
+
+
