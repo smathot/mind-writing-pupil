@@ -22,7 +22,6 @@ import sys
 from exparser import TraceKit as tk
 from exparser import Plot
 from exparser import Math
-from exparser.TangoPalette import *
 from exparser.Cache import cachedDataMatrix
 from exparser.PivotMatrix import PivotMatrix
 from yamldoc import validate
@@ -30,159 +29,34 @@ from matplotlib import pyplot as plt
 from scipy.stats import nanmean, nanstd
 import warnings
 import numpy as np
-
-show = '--silent' not in sys.argv
-brightColor = orange[1]
-darkColor = blue[1]
-rndRange = range(100)
+from constants import *
 
 @validate
-def getTraceAvg(dm, traceLen=1350, rnd=rndRange, phaseTypes=['bright', 'dark']):
+def _filter(dm):
 
 	"""
 	desc:
-		Gets the average pupil-size trace for a selection of trials.
+		Performs some preprocessing on the DataMatrix.
 
 	arguments:
 		dm:
 			desc:	A DataMatrix.
 			type:	DataMatrix
-
-	keywords:
-		traceLen:
-			desc:	The length of the output trace.
-			type:	int
-		rnd:
-			desc:	A list of round numbers to be included.
-			type:	list
-		phaseTypes:
-			desc:	A list of phase types, which can be bright or dark.
-			type:	list
 
 	returns:
-		desc:	A 2D array with the mean and std of the trace.
-		type:	ndarray
+		desc:	A filtered DataMatrix.
+		type:	DataMatrix
 	"""
 
-	l = []
 	for i in dm.range():
-		for rnd in rndRange:
-			for phaseType in phaseTypes:
-				path = 'traces/%s-%s-%04d-%04d-%s.npy' \
-					% (dm['file'][i][4:-5], dm['file'][i][-5:-4],
-					dm['trialId'][i], rnd, phaseType)
-				if not os.path.exists(path):
-					continue
-				print path
-				a = np.load(path)[:,2][:traceLen]
-				b = np.empty(traceLen)
-				b[:] = np.nan
-				b[:len(a)] = a
-				l.append(b)
-	c = np.array(l)
-	return np.array( [nanmean(c, axis=0), nanstd(c, axis=0)] )
-
-@validate
-def pupilPlot(dm):
-
-	"""
-	desc:
-		Creates the overall pupil-size plot for switch-to-bright and
-		switch-to-dark rounds.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	assert(dm.count('subject_nr') == 1)
-	traceLen = int(dm['endCollectionTime'].mean())
-	mBright = getTraceAvg(dm, traceLen=traceLen, phaseTypes=['bright'])
-	mDark = getTraceAvg(dm, traceLen=traceLen, phaseTypes=['dark'])
-	xData = np.linspace(0, mBright.shape[1]-1, mBright.shape[1])
-	plt.fill_between(xData, mBright[0]-mBright[1], mBright[0]+mBright[1],
-		alpha=.25, color=brightColor)
-	plt.fill_between(xData, mDark[0]-mDark[1], mDark[0]+mDark[1], alpha=.25,
-		color=darkColor)
-	plt.plot(mBright[0], color=brightColor)
-	plt.plot(mDark[0], color=darkColor)
-	plt.axvline(dm['endInvertTime'].mean(), color='black', linestyle='--')
-	plt.axvline(dm['endAdaptationTime'].mean(), color='black', linestyle='--')
-	plt.xlabel('Time since round start (ms)')
-	plt.ylabel('Mean pupil area')
-	plt.xlim(0, traceLen)
-
-@validate
-def pupilPlotSubject(dm):
-
-	"""
-	desc:
-		Creates the overall pupil-size plot for switch-to-bright and
-		switch-to-dark rounds, separately for each subject.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	i = 0
-	for _dm in dm.group('subject_nr'):
-		plt.subplot(1, dm.count('subject_nr'), i)
-		pupilPlot(_dm)
-		i += 1
-	Plot.save('pupilPlotSubject', show=show)
-
-@validate
-def pupilPlotEcc(dm):
-
-	"""
-	desc:
-		Creates the overall pupil-size plot for switch-to-bright and
-		switch-to-dark rounds, separately for each subject.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	i = 1
-	for ecc in dm.unique('ecc'):
-		for subject_nr in dm.unique('subject_nr'):
-			_dm = dm.select('ecc == %d' % ecc) \
-				.select('subject_nr == %s' % subject_nr)
-			plt.subplot(dm.count('ecc'), dm.count('subject_nr'), i)
-			plt.title('%d - %d' % (subject_nr, ecc))
-			pupilPlot(_dm)
-			i += 1
-	Plot.save('pupilPlotEcc', show=show)
-
-@validate
-def pupilPlotSize(dm):
-
-	"""
-	desc:
-		Creates the overall pupil-size plot for switch-to-bright and
-		switch-to-dark rounds, separately for each subject.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	i = 1
-	for size in dm.unique('size'):
-		for subject_nr in dm.unique('subject_nr'):
-			_dm = dm.select('size == %d' % size) \
-				.select('subject_nr == %s' % subject_nr)
-			plt.subplot(dm.count('size'), dm.count('subject_nr'), i)
-			plt.title('%d - %d' % (subject_nr, size))
-			pupilPlot(_dm)
-			i += 1
-	Plot.save('pupilPlotSize', show=show)
+		_file = dm['file'][i]
+		subject_nr1 = dm['subject_nr'][i]
+		subject_nr2 = int(_file[5:7])
+		if subject_nr1 != subject_nr2:
+			warnings.warn(u'Subject nr mismatch (%d - %d) in %s' \
+				% (subject_nr1, subject_nr2, _file))
+		dm['subject_nr'][i] = subject_nr2
+	return dm
 
 @validate
 def evolution(dm):
@@ -264,90 +138,6 @@ def evolution(dm):
 	plt.xlabel('Ratio threshold')
 	plt.ylabel('Rounds until decision')
 	Plot.save('evolution', show=show)
-
-@validate
-def performance(dm, lDv):
-
-	"""
-	desc:
-		Analyzes accuracy and response times as a function of specified
-		dependent variables.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-		lDv:
-			desc:	A list of dependent variables to split performance by.
-			type:	list
-	"""
-
-	cm = dm.select('correct == 0').collapse(['subject_nr']+lDv, vName='correct')
-	cm.save('output/performance.n_error.subject_nr.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(['subject_nr']+lDv, vName='correct')
-	cm.save('output/performance.acc.subject_nr.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(lDv, vName='correct')
-	cm.save('output/performance.acc.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(['subject_nr']+lDv, vName='rt')
-	cm.save('output/performance.rt.subject_nr.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(lDv, vName='rt')
-	cm.save('output/performance.rt.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(['subject_nr']+lDv, vName='rounds')
-	cm.save('output/performance.rounds.subject_nr.%s.csv' % ('.'.join(lDv)))
-	print cm
-	cm = dm.collapse(lDv, vName='rounds')
-	cm.save('output/performance.rounds.%s.csv' % ('.'.join(lDv)))
-	print cm
-
-@validate
-def performanceMode2(dm):
-
-	"""
-	desc:
-		Analyzes accuracy and response times per mode 2. For Exp 1.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	performance(dm, ['mode2'])
-
-@validate
-def performanceEcc(dm):
-
-	"""
-	desc:
-		Analyzes accuracy and response times per ecc. For Exp 2.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	performance(dm, ['ecc'])
-
-@validate
-def performanceSize(dm):
-
-	"""
-	desc:
-		Analyzes accuracy and response times per ecc. For Exp 3.
-
-	arguments:
-		dm:
-			desc:	A DataMatrix.
-			type:	DataMatrix
-	"""
-
-	performance(dm, ['size'])
 
 @validate
 def fixation(dm):

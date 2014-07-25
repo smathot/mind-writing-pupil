@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 """
@@ -18,11 +17,10 @@ You should have received a copy of the GNU General Public License
 along with P0014.1.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from exparser.TangoPalette import *
 import sys
-sys.path.append('..')
-from exparser import Tools
-from analysis import helpers, parse
-Tools.analysisLoop(
-	parse.getDataMatrix(cacheId='data'),
-	mods=[helpers]
-	)
+
+show = '--silent' not in sys.argv
+brightColor = orange[1]
+darkColor = blue[1]
+rndRange = range(100)

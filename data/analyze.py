@@ -21,8 +21,8 @@ along with P0014.1.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 sys.path.append('..')
 from exparser import Tools
-from analysis import helpers, parse
+from analysis import helpers, parse, performance, pupilPlot
 Tools.analysisLoop(
 	parse.getDataMatrix(cacheId='data'),
-	mods=[helpers]
+	pre=['_filter'], mods=[helpers, performance, pupilPlot]
 	)
