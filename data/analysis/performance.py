@@ -103,3 +103,18 @@ def performanceSize(dm):
 	"""
 
 	performance(dm, ['size'])
+
+@validate
+def performanceBgLum(dm):
+
+	"""
+	desc:
+		Analyzes accuracy and response times per ecc. For Exp 3.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	performance(dm, ['bgLum'])

@@ -173,3 +173,28 @@ def pupilPlotSize(dm):
 			pupilPlot(_dm)
 			i += 1
 	Plot.save('pupilPlotSize', show=show)
+
+@validate
+def pupilPlotBgLum(dm):
+
+	"""
+	desc:
+		Creates the overall pupil-size plot for switch-to-bright and
+		switch-to-dark rounds, separately for each subject.
+
+	arguments:
+		dm:
+			desc:	A DataMatrix.
+			type:	DataMatrix
+	"""
+
+	i = 1
+	for bgLum in dm.unique('bgLum'):
+		for subject_nr in dm.unique('subject_nr'):
+			_dm = dm.select('bgLum == %f' % bgLum) \
+				.select('subject_nr == %s' % subject_nr)
+			plt.subplot(dm.count('bgLum'), dm.count('subject_nr'), i)
+			plt.title('%d - %f' % (subject_nr, bgLum))
+			pupilPlot(_dm)
+			i += 1
+	Plot.save('pupilPlotBgLum', show=show)
