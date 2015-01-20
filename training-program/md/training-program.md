@@ -18,7 +18,7 @@ The aim of this document is to preregister a detailed description of the trainin
 
 ## Participants
 
-Ten naive participants from the community of Aix-Marseille université will be trained. Participants will have normal, uncorrected vision (no glasses or lenses) and be 18 - 40 years old. Participants will receive €60 for their participation. Participants will provide written informed consent prior to training. The study will be conducted with approval of the ethics committee of Aix-Marseille Université (Ref. 2014-12-03-09).
+Ten naive participants from the community of Aix-Marseille université will be trained. Participants will have normal, uncorrected vision (no glasses or lenses) and be 18 - 40 years old. Participants will receive €60 for their participation. Participants will provide written informed consent prior to training. The study will be conducted with approval of the ethics committee of Aix-Marseille Université (Ref.: 2014-12-03-09).
 
 ## Exclusion criteria
 
@@ -28,7 +28,7 @@ Participants will be excluded when any of the following criteria is met: the par
 
 Eye position and pupil size will be recorded monocularly with an EyeLink 1000 (SR Research, Mississauga, ON, Canada), a video-based eye tracker sampling at 1000 Hz. We will record the right eye, unless the left eye provides a better signal. Stimuli will be presented on a 21" ViewSonic p227f CRT monitor (1280x1024, 85 Hz) running Ubuntu Linux 14.04. Testing will take place in a dimly lit room.
 
-The experiment is implemented with OpenSesame [@MathôtSchreij2012] using the PsychoPy back-end [@Peirce2007] for display control and PyGaze [@Dalmaijer2014] for eye tracking. The version of the experimental script that will be used is hosted on <http://bitbucket.org> in the `p0015-plr-bci` repository at commit [`#85e07b0`](https://bitbucket.org/smathot/p0015-plr-bci/commits/85e07b0b3f0a602c6d5ea469d5602447242852a5) in the `training` branch.
+The experiment is implemented with OpenSesame [@MathôtSchreij2012] using the PsychoPy back-end [@Peirce2007] for display control and PyGaze [@Dalmaijer2014] for eye tracking. The version of the experimental script that will be used is hosted on <http://bitbucket.org> in the `p0015-plr-bci` repository at commit [`#6638427`](https://bitbucket.org/smathot/p0015-plr-bci/commits/6638427732a60f053a8c68ad8f5a3638a100f512) in the `training` branch.
 
 ## General stimuli and procedure
 
@@ -103,4 +103,4 @@ figure:
   The progressive selection procedure used for free writing.
 --%
 
-First, participants will be given the chance to familiarize themselves with the layout of the 'virtual keyboard'. Next, they will practice by writing the French word "ecrire" (without accent). Practice is completed when the word has been successfully written, or after three tries. Next, participants choose a short sentence of 10 to 15 characters. This sentence may not contain accents or punctuation. Participants are given two opportunities to write this sentence. Writing is considered correct when the final sentence matches the specified sentence. The use of backspace to correct mistakes during text input are permitted.
+First, participants will be given the chance to familiarize themselves with the layout of the 'virtual keyboard'. Next, they will practice by writing the French word "ecrire" (without accent). Practice is completed when the word has been successfully written, or after three tries. Next, participants choose a short sentence of 10 to 15 characters. This sentence may not contain accents or punctuation. Participants are given two opportunities to write this sentence. Writing is considered correct when the final sentence matches the specified sentence. The use of backspace to correct mistakes during text input is permitted.
