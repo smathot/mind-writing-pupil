@@ -12,7 +12,7 @@ correspondence: |
 
 Recent studies have shown that the pupillary light response is modulated by covert visual attention [@Binda2013Bright;@Mathôt2013Plos;@Naber2013Osc;@Mathôt2014Exo]: When you covertly (without looking at) attend to a bright stimulus, your pupils constrict relative to when you attend to a dark stimulus. Here, we will use this phenomenon to decode the focus of attention on single trials, thus testing the feasibility of a human-computer interface based on pupillometry and decoding of attention.
 
-Participants will be trained to select one of several stimuli by covertly paying attention to it. We predict that all participants will reach a selection accuracy of more than 80% during the final block of each training phase (Phase 1-3 and 5). Furthermore, using an extension of this technique, we predict that participants will be able to correctly write a short sentence of their choosing (Phase 4).
+Participants will be trained to select one of several stimuli by covertly paying attention to it. We predict that all participants will reach a selection accuracy of more than 80% during the final block of each training phase (Phase 1-3). Furthermore, using an extension of this technique, we predict that participants will be able to correctly write a short sentence of their choosing (Phase 4).
 
 The aim of this document is to preregister a detailed description of the training program and predictions. No data has been collected yet.
 
@@ -22,7 +22,7 @@ Ten naive participants from the community of Aix-Marseille université will be t
 
 ## Exclusion criteria
 
-Participants will be excluded when any of the following criteria is met: the participant frequently looks away from the central fixation dot; the participant blinks excessively; there are technical issues that prevent high-quality recording. Because it is difficult to evaluate these criteria automatically, exclusion will be based on evaluation by the experimenters (JBM and SM). When a participant is excluded, data collection will be stopped, and another participant will be recruited to replace the excluded participant. Participants may only be excluded during Phase 1 of the training program.
+Participants will be excluded when any of the following criteria is met: the participant frequently looks away from the central fixation dot; the participant blinks excessively; there are technical issues that prevent high-quality recording; the participant decides not to finish the experiment. Because it is difficult to evaluate all of these criteria automatically, exclusion will be based on evaluation by the experimenters (JBM and SM). When a participant is excluded, data collection will be stopped, and another participant will be recruited to replace the excluded participant. Participants may only be excluded during Phase 1 of the training program.
 
 ## Software and apparatus
 
@@ -32,7 +32,7 @@ The experiment is implemented with OpenSesame [@MathôtSchreij2012] using the Ps
 
 ## General stimuli and procedure
 
-Before each block, a nine-point eye-tracker calibration is performed. At the start of each trial, an automatic single-point recalibration ("drift correction") is performed. The display consists of a green central fixation dot (r = 0.2°) on a gray background. Items are presented in a circular configuration at an eccentricity of 9.2° (see %FigParadigm). Items consist of colored letters against a dark or bright background (r = 6.2°). When only two items are presented, each item is accompanied by a mirror-symmetric placeholder (see %FigParadigm::a; this configuration is chosen because pilot experiments showed it to be the most effective of several tested configurations). Participants are instructed to attend covertly to the target stimulus, while keeping gaze fixed on the central fixation dot. The target is either indicated by a cue (Phase 1-3 and 5), or chosen by the participant (Phase 4). The trial ends when a selection has been made (%FigParadigm::b, see Selection algorithm).
+Before each block, a nine-point eye-tracker calibration is performed. At the start of each trial, an automatic single-point recalibration ("drift correction") is performed. The display consists of a green central fixation dot (r = 0.2°) on a gray background. Items are presented in a circular configuration at an eccentricity of 9.2° (see %FigParadigm). Items consist of colored letters against a dark or bright background (r = 6.2°). When only two items are presented, each item is accompanied by a mirror-symmetric placeholder (see %FigParadigm::a; this configuration is chosen because pilot experiments showed it to be the most effective of several tested configurations). Participants are instructed to attend covertly to the target stimulus, while keeping gaze fixed on the central fixation dot. The target is either indicated by a cue (Phase 1-3), or chosen by the participant (Phase 4). The trial ends when a selection has been made (%FigParadigm::b, see Selection algorithm).
 
 %--
 figure:
@@ -73,13 +73,15 @@ figure:
 
 ## Training program
 
-The training program consists of five phases. During Phase 1-3 the participant will be trained to make progressively more complicated selections. During Phase 4, the participant will write a short self-selected sentence using an extension of the technique trained during Phase 1-3. Phase 5 is a repetition of Phase 1 using a gaze-stabilized display. The aim of Phase 5 is to verify that selection is driven by covert attention, and not by biases in eye position.
+The training program consists of four phases. During Phase 1-3 the participant will be trained to make progressively more complicated selections. During Phase 4, the participant will write a short self-selected sentence using an extension of the technique trained during Phase 1-3.
 
 ### Phase 1: Two stimuli
 
-During Phase 1, the participant is trained to select one of two simultaneously presented stimuli. Blocks consist of 16 selections. Participants complete at least 6 blocks, and at most 12 blocks. When a participant finishes a block with 100% accuracy, after having completed at least 6 blocks, the phase is finished.
+During Phase 1, the participant is trained to select one of two simultaneously presented stimuli. Blocks consist of 16 selections. Participants complete at least 6 blocks, and at most 12 blocks. When a participant finishes a block with 100% accuracy, after having completed at least 6 blocks, the training part of the phase is finished, and we will continue with a single block in gaze-stabilization mode, as described below.
 
-If, after the maximum number of blocks have been completed, accuracy on the last block is less than 80%, the phase will be restarted with a more conservative threshold of 1.5 (default threshold = 1.375). This threshold will be kept for the remainder of the training.
+If, after the maximum number of training blocks have been completed, accuracy on the last block is less than 80%, the phase will be restarted with a more conservative threshold of 1.5 (default threshold = 1.375). This threshold will be kept for the remainder of the training.
+
+After the training blocks have been completed, the participant will be tested on 1 block with gaze-stabilization mode enabled. In this mode of the experiment, the stimulus display is centered on the gaze position using a continuous gaze-contingent algorithm. This causes the display to appear jittery, which is why gaze stabilization is not enabled during the training blocks. However, running one block in gaze-stabilization mode allows us to verify that selection is really driven by covert visual attention, rather than by biases in gaze position.
 
 ### Phase 2: Four stimuli
 
@@ -101,9 +103,4 @@ figure:
   The progressive selection procedure used for free writing.
 --%
 
-First, participants will practice by writing the French word "ecrire" (without accent). The aim of the practice is to familiarize the participants with the layout of the 'virtual keyboard'. Practice is completed when the word has been successfully written, or after three tries. Next, participants choose a short sentence of 10 to 15 characters. This sentence may contain no accents and no punctuation. Participants are given two opportunities to write this sentence. Writing is considered correct when the final sentence matches the specified sentence, but use of backspace to correct mistakes during text input are permitted.
-
-### Phase 5: Gaze stabilization
-
-Phase 1 is identical to Phase, except that the display will be locked to gaze position through a real-time gaze-contingent algorithm.
-
+First, participants will practice by writing the French word "ecrire" (without accent). The aim of the practice is to familiarize the participants with the layout of the 'virtual keyboard'. Practice is completed when the word has been successfully written, or after three tries. Next, participants choose a short sentence of 10 to 15 characters. This sentence may contain no accents and no punctuation. Participants are given two opportunities to write this sentence. Writing is considered correct when the final sentence matches the specified sentence, but the use of backspace to correct mistakes during text input are permitted.
