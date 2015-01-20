@@ -18,17 +18,17 @@ The aim of this document is to preregister a detailed description of the trainin
 
 ## Participants
 
-Ten naive participants from the community of Aix-Marseille université will be trained. Participants will have normal, uncorrected vision (no glasses or lenses) and be 18 - 40 years old. Participants will receive €70 for their participation. Participants will provide written informed consent prior to training. The study will be conducted with approval of the ethics committee of Aix-Marseille Université (#2014-12-03-09).
+Ten naive participants from the community of Aix-Marseille université will be trained. Participants will have normal, uncorrected vision (no glasses or lenses) and be 18 - 40 years old. Participants will receive €60 for their participation. Participants will provide written informed consent prior to training. The study will be conducted with approval of the ethics committee of Aix-Marseille Université (Ref. 2014-12-03-09).
 
 ## Exclusion criteria
 
-Participants will be excluded when any of the following criteria is met: the participant frequently looks away from the central fixation dot; the participant blinks excessively; there are technical issues that prevent high-quality recording; the participant decides not to finish the experiment. Because it is difficult to evaluate all of these criteria automatically, exclusion will be based on evaluation by the experimenters (JBM and SM). When a participant is excluded, data collection will be stopped, and another participant will be recruited to replace the excluded participant. Participants may only be excluded during Phase 1 of the training program.
+Participants will be excluded when any of the following criteria is met: the participant frequently looks away from the central fixation dot; the participant blinks excessively; there are technical issues that prevent high-quality recording; the participant decides not to finish the experiment. Because it is difficult to evaluate all of these criteria automatically, exclusion will be based on evaluation by the experimenters (JBM and SM). When a participant is excluded, data collection will be stopped, and another participant will be recruited to replace the excluded participant. Participants may only be excluded based on experimenter evaluation during Phase 1 of the training program, but participants can choose to stop the experiment at any moment.
 
 ## Software and apparatus
 
 Eye position and pupil size will be recorded monocularly with an EyeLink 1000 (SR Research, Mississauga, ON, Canada), a video-based eye tracker sampling at 1000 Hz. Stimuli will be presented on a 21" ViewSonic p227f CRT monitor (1280x1024, 85 Hz) running Ubuntu Linux 14.04. Testing will take place in a dimly lit room.
 
-The experiment is implemented with OpenSesame [@MathôtSchreij2012] using the PsychoPy back-end [@Peirce2007] for display control and PyGaze [@Dalmaijer2014] for eye tracking. The version of the experimental script that will be used is hosted on <http://bitbucket.org> in the `p0015-plr-bci` repository at commit `#588c783` in the `training` branch.
+The experiment is implemented with OpenSesame [@MathôtSchreij2012] using the PsychoPy back-end [@Peirce2007] for display control and PyGaze [@Dalmaijer2014] for eye tracking. The version of the experimental script that will be used is hosted on <http://bitbucket.org> in the `p0015-plr-bci` repository at commit [`#85e07b0`](https://bitbucket.org/smathot/p0015-plr-bci/commits/85e07b0b3f0a602c6d5ea469d5602447242852a5) in the `training` branch.
 
 ## General stimuli and procedure
 
@@ -73,7 +73,7 @@ figure:
 
 ## Training program
 
-The training program consists of four phases. During Phase 1-3 the participant will be trained to make progressively more complicated selections. During Phase 4, the participant will write a short self-selected sentence using an extension of the technique trained during Phase 1-3.
+The training program consists of four phases. During Phase 1-3 the participant will be trained to make progressively more complicated selections. During Phase 4, the participant will write a short self-selected sentence using an extension of the technique trained during Phase 1-3. Training will take place across multiple days, with a maximum of one week between consecutive sessions.
 
 ### Phase 1: Two stimuli
 
@@ -81,7 +81,7 @@ During Phase 1, the participant is trained to select one of two simultaneously p
 
 If, after the maximum number of training blocks have been completed, accuracy on the last block is less than 80%, the phase will be restarted with a more conservative threshold of 1.5 (default threshold = 1.375). This threshold will be kept for the remainder of the training.
 
-After the training blocks have been completed, the participant will be tested on 1 block with gaze-stabilization mode enabled. In this mode of the experiment, the stimulus display is centered on the gaze position using a continuous gaze-contingent algorithm. This causes the display to appear jittery, which is why gaze stabilization is not enabled during the training blocks. However, running one block in gaze-stabilization mode allows us to verify that selection is really driven by covert visual attention, rather than by biases in gaze position.
+After the training blocks have been completed, the participant will be tested on 1 block with gaze-stabilization mode enabled. In this mode of the experiment, the stimulus display is centered on gaze position using a continuous gaze-contingent algorithm. This causes the display to appear jittery, which is why gaze stabilization is not enabled during the training blocks. However, running one block in gaze-stabilization mode will allow us to verify that selection is really driven by covert visual attention, rather than by biases in gaze position.
 
 ### Phase 2: Four stimuli
 
@@ -89,7 +89,7 @@ Phase 2 is identical to Phase 1, except that four stimuli are presented simultan
 
 ### Phase 3: Eight stimuli
 
-Phase 3 is identical to Phase 1, except for the following differences: Eight stimuli are presented simultaneously. Blocks consist of 32 trials. Participants complete at least 3 and at most 6 blocks.
+Phase 2 is identical to Phase 1, except that eight stimuli are presented simultaneously.
 
 ### Phase 4: Free writing
 
