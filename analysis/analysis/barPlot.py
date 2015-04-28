@@ -27,13 +27,14 @@ def barPlot(dm, phase=1, dv='correct'):
 		y = _dm[dv].mean()
 		x = int(_dm['subject_nr'][0])
 		se = _dm[dv].std() / np.sqrt(len(_dm))
-		plt.bar(x-.4, y, color=colors[x-1])
+		plt.bar(x-.4, y, color=gray[1])
 		plt.errorbar(x, y, yerr=se, color='black', capsize=0)
+	dm = dm.select('block <= 6')
 	y = dm[dv].mean()
 	print('Overall y = %f' % y)
 	x = -1
 	se = _dm[dv].std() / np.sqrt(len(_dm))
-	plt.bar(x-.4, y, color=aluminium[3])
+	plt.bar(x-.4, y, color=blue[1])
 	plt.errorbar(x, y, yerr=se, color='black', capsize=0)
 	maxX = int(np.max(_dm['subject_nr']))+1
 	plt.xlim(-2, maxX)
@@ -41,7 +42,6 @@ def barPlot(dm, phase=1, dv='correct'):
 
 def fullBarPlot(dm):
 
-	dm = dm.select('block <= 6')
 	Plot.new(Plot.w)
 	# plt.subplots_adjust(wspace=0, hspace=0)
 	for phase in [1,2,3]:

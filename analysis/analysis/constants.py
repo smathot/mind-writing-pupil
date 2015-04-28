@@ -21,6 +21,7 @@ from matplotlib import pyplot as plt
 from exparser import Plot
 from exparser.TangoPalette import *
 from exparser.DataMatrix import DataMatrix
+from exparser.PivotMatrix import PivotMatrix
 import numpy as np
 
 #colors = [butter[0], orange[0], chameleon[0], skyBlue[0], plum[0],
