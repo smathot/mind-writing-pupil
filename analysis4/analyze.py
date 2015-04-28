@@ -19,9 +19,9 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from exparser import Tools
-from analysis import helpers, parse, tracePlot, barPlot, validate
+from analysis import helpers, parse
 Tools.analysisLoop(
 	parse.getDataMatrix(cacheId='data'),
-	mods=[helpers, tracePlot, barPlot, validate],
+	mods=[helpers],
 	pre=['_filter'],
 	)

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 """
@@ -18,10 +17,16 @@ You should have received a copy of the GNU General Public License
 along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from exparser import Tools
-from analysis import helpers, parse, tracePlot, barPlot, validate
-Tools.analysisLoop(
-	parse.getDataMatrix(cacheId='data'),
-	mods=[helpers, tracePlot, barPlot, validate],
-	pre=['_filter'],
-	)
+from matplotlib import pyplot as plt
+from exparser import Plot
+from exparser.TangoPalette import *
+from exparser.DataMatrix import DataMatrix
+import numpy as np
+
+#colors = [butter[0], orange[0], chameleon[0], skyBlue[0], plum[0],
+#	scarletRed[0], butter[2], orange[2], chameleon[2], skyBlue[2]]
+colors = allColors[:]*2
+# Critical values for blocks of 16 trials
+critical2 = 11
+critical4 = 7
+critical8 = 4

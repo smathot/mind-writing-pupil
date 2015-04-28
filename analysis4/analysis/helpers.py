@@ -17,20 +17,9 @@ You should have received a copy of the GNU General Public License
 along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from analysis.constants import *
+from exparser.DataMatrix import DataMatrix
 
 def _filter(dm):
-
-	#dm = dm.select('subject_nr != 8')
-
-	"""
-	PP01: Quit voluntarily
-	PP05: Quit voluntarily
-	PP08: Didn't make it, below 80% after restarting phase 1
-
-	Remap PP11 to PP01
-	Remap PP12 to PP05
-	"""
 
 	# Participants 1 and 5 dropped out voluntarily
 	dm = dm.select('subject_nr != 5')
@@ -41,4 +30,22 @@ def _filter(dm):
 			dm['subject_nr'][i] = 1
 		if dm['subject_nr'][i] == 12:
 			dm['subject_nr'][i] = 5
+	dm = dm.select('free_writing_result != "ECRITURE"')
+	dm = dm.select('free_writing_result != "ECRIRE"')
 	return dm
+
+def descriptives(dm):
+
+	l = [['pp', 'rt', 'rtn', 'resp', 'nchar', 'nresp']]
+	for i in dm.range():
+		sn, resp, rt = dm['subject_nr'][i], dm['full_response'][i], \
+			dm['free_writing_time'][i]
+		rt = rt / 1000.
+		rtn = rt / len(resp)
+		print('%2d\t%.2f\t%.2f\t%s' % (sn, rt, rtn,
+			dm['free_writing_result'][i]))
+		resp = dm['free_writing_result'][i].replace('Space', ' ')
+		l.append([sn, rt, rtn, resp, ])
+	dm = DataMatrix(l)
+	dm.sort('pp')
+	print(dm)

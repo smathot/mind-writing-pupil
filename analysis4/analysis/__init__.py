@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 """
@@ -17,11 +16,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-from exparser import Tools
-from analysis import helpers, parse, tracePlot, barPlot, validate
-Tools.analysisLoop(
-	parse.getDataMatrix(cacheId='data'),
-	mods=[helpers, tracePlot, barPlot, validate],
-	pre=['_filter'],
-	)
