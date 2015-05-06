@@ -19,7 +19,22 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 
 from analysis.constants import *
 
+@yamldoc.validate
 def validatePhase(dm):
+
+	"""
+	desc:
+		Checks the integrity of the data for one phase for one subject.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+
+	returns:
+		desc:	A bool indicating whether phase is complete.
+		type:	bool
+	"""
 
 	if len(dm) == 0:
 		print('*** Phase missing')
@@ -66,7 +81,23 @@ def validatePhase(dm):
 		ok = False
 	return ok
 
+@yamldoc.validate
 def validateSubject(dm):
+
+	"""
+	desc:
+		Checks the integrity of the data for one subject.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+
+	returns:
+		desc:	A (subject_nr, ok1, ok2, ok3, okAll) tuple, where ok1 is a bool
+				indicating whether phase 1 is complete, etc.
+		type:	tuple
+	"""
 
 	subject_nr = dm['subject_nr'][0]
 	print('\nValidating subject %d' % subject_nr)
@@ -79,7 +110,19 @@ def validateSubject(dm):
 	okAll = ok1 and ok2 and ok3
 	return subject_nr, ok1, ok2, ok3, okAll
 
+@yamldoc.validate
 def validate(dm):
+
+	"""
+	desc:
+		Checks the integrity of the data, and prints a summary report to the
+		stdout.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+	"""
 
 	if list(dm.unique('stabilize')) != [0,1]:
 		print('*** Invalid stabilize values: %s' % dm.unique('stabilize'))

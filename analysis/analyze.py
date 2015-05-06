@@ -24,4 +24,5 @@ Tools.analysisLoop(
 	parse.getDataMatrix(cacheId='data'),
 	mods=[helpers, tracePlot, barPlot, validate],
 	pre=['_filter'],
+	full=['fullBarPlot', 'fullTracePlot', 'fullTracePlotBySubject']
 	)

@@ -18,14 +18,14 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from matplotlib import pyplot as plt
+import yamldoc
 from exparser import Plot
 from exparser.TangoPalette import *
 from exparser.DataMatrix import DataMatrix
 from exparser.PivotMatrix import PivotMatrix
+from scipy import stats
 import numpy as np
 
-#colors = [butter[0], orange[0], chameleon[0], skyBlue[0], plum[0],
-#	scarletRed[0], butter[2], orange[2], chameleon[2], skyBlue[2]]
 colors = allColors[:]*2
 # Critical values for blocks of 16 trials
 critical2 = 11

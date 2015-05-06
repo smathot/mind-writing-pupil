@@ -19,17 +19,22 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 
 from analysis.constants import *
 
+@yamldoc.validate
 def _filter(dm):
 
-	#dm = dm.select('subject_nr != 8')
-
 	"""
-	PP01: Quit voluntarily
-	PP05: Quit voluntarily
-	PP08: Didn't make it, below 80% after restarting phase 1
+	desc:
+		Performance various preprocessing on the data, notably remapping
+		participant numbers and removing dropped-out participants.
 
-	Remap PP11 to PP01
-	Remap PP12 to PP05
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+
+	returns:
+		desc:	Filtered data.
+		type:	DataMatrix
 	"""
 
 	# Participants 1 and 5 dropped out voluntarily
@@ -39,16 +44,30 @@ def _filter(dm):
 		# Remove phase 2 of participant 8, because it was the redo of phase 1
 		if dm['subject_nr'][i] == 8 and dm['phase'][i] == 2:
 			dm['subject_nr'][i] = -1
-		# Remap participants 11 and 12 to 1 and 5
-		if dm['subject_nr'][i] == 11:
-			dm['subject_nr'][i] = 1
-		if dm['subject_nr'][i] == 12:
-			dm['subject_nr'][i] = 5
+	# Remap participants
+	# Tested 11 -> 1
+	# Tested 12 -> 5
+	# Tested 10 -> 8
+	# Tested 8 -> 10
+	dm.recode('subject_nr', [(11, 1), (12, 5), (10, 99)])
+	dm.recode('subject_nr', [(8, 10), (99, 8)])
 	dm = dm.select('subject_nr > 0')
 	dm = dm.select('correct != "NA"')
+	print('N(trials) = %d' % len(dm))
 	return dm
 
+@yamldoc.validate
 def descriptives(dm):
+
+	"""
+	desc:
+		Gives descriptives results of performance.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+	"""
 
 	dm = dm.select('block <= 6')
 	for phase in (1,2,3):

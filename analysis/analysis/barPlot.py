@@ -20,7 +20,26 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 from analysis.constants import *
 from analysis.tracePlot import subplot
 
-def barPlot(dm, phase=1, dv='correct'):
+@yamldoc.validate
+def barPlot(dm, dv='correct', phase=1):
+
+	"""
+	desc:
+		Creates a bar plot for one phase.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+
+	keywords:
+		dv:
+			desc:	The dependent variable.
+			valid:	[correct, loop_rt]
+		phase:
+			desc:	The phase to analyze.
+			valid:	[1,2,3]
+	"""
 
 	dm = dm.select('phase == %d' % phase)
 	for _dm in dm.group('subject_nr'):
@@ -40,10 +59,20 @@ def barPlot(dm, phase=1, dv='correct'):
 	plt.xlim(-2, maxX)
 	plt.xticks(range(-1, maxX), ['Overall', ''] + range(1, maxX))
 
+@yamldoc.validate
 def fullBarPlot(dm):
 
+	"""
+	desc:
+		Creates a full bar plot of the results.
+
+	arguments:
+		dm:
+			desc:	The data.
+			type:	DataMatrix
+	"""
+
 	Plot.new(Plot.w)
-	# plt.subplots_adjust(wspace=0, hspace=0)
 	for phase in [1,2,3]:
 		subplot(dv='correct', phase=phase)
 		barPlot(dm, phase=phase, dv='correct')
