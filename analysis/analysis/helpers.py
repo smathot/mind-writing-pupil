@@ -19,7 +19,7 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 
 from analysis.constants import *
 
-@yamldoc.validate
+@cachedDataMatrix
 def _filter(dm):
 
 	"""

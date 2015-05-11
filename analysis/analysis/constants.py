@@ -23,7 +23,9 @@ from exparser import Plot
 from exparser.TangoPalette import *
 from exparser.DataMatrix import DataMatrix
 from exparser.PivotMatrix import PivotMatrix
+from exparser.Cache import cachedDataMatrix
 from scipy import stats
+from exparser import RBridge
 import numpy as np
 
 colors = allColors[:]*2

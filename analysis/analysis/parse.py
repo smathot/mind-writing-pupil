@@ -40,6 +40,7 @@ class MyReader(EyelinkAscFolderReader):
 		"""
 
 		self.stabilize = None
+		self.baselinePupilSize = None
 
 	def finishTrial(self, trialDict):
 
@@ -53,9 +54,12 @@ class MyReader(EyelinkAscFolderReader):
 				type:	dict
 		"""
 
-		if self.stabilize is None:
-			raise Exception('Stabilization not set!')
+		assert(self.stabilize is not None)
+		assert(self.baselinePupilSize is not None)
+		assert('targetAngle' in trialDict)
+		assert('pruneRt' in trialDict)
 		trialDict['stabilize'] = self.stabilize
+		trialDict['baselinePupilSize'] = self.baselinePupilSize
 		file = trialDict['file']
 		subject_nr = int(file[2:4])
 		phase = int(file[4:6])
@@ -90,6 +94,36 @@ class MyReader(EyelinkAscFolderReader):
 				self.stabilize = 0
 			elif l[-1] == 'True':
 				self.stabilize = 1
+
+		# MSG	1662043 item id="A" status=init likelihood=1 ecc=390 \
+		# angle=0.785398163397 size=132 brightness=-1 color=green opacity=0.5 \
+		# x=275.771644663 y=275.7716
+		if 'targetAngle' not in trialDict and len(l) > 3 and l[2] == 'item':
+			# id="A"
+			_l = l[3].split('=')
+			assert(_l[0] == 'id')
+			letter = _l[1][1:-1]
+			if letter == trialDict['target']:
+				# angle=0.785398163397
+				_l = l[7].split('=')
+				assert(_l[0] == 'angle')
+				angle = _l[1]
+				trialDict['targetAngle'] = angle
+				print('Target = %s, angle = %s' % (letter, angle))
+
+		# Get baseline pupil size
+		if self.baselinePupilSize is None:
+			fix = self.toFixation(l)
+			if fix is not None:
+				self.baselinePupilSize = fix['pupilSize']
+
+		# MSG	3647136 start_selection_loop
+		if len(l) == 3 and l[2] == 'start_selection_loop':
+			self.startTime = l[1]
+		# MSG	3652559 prune yes
+		if 'pruneRt' not in trialDict and len(l) == 4 and l[2] == 'prune' \
+			and l[3] == 'yes':
+			trialDict['pruneRt'] = l[1] - self.startTime
 
 for dirpath, dirnames, filenames in os.walk('../data'):
 	if 'Phase 4' in dirpath:
