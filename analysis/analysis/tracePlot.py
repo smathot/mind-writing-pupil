@@ -65,7 +65,7 @@ def tracePlot(dm, dv='correct', phase=1, color=blue[1], style='o-'):
 		if __dm.count('subject_nr') > 1:
 			for a in stats.itemfreq(m):
 				y.append(a[0])
-				x.append(block-1)
+				x.append(block)
 				s.append(2*a[1]**2)
 		if block > 6 and __dm.count('subject_nr') != 1:
 			continue
