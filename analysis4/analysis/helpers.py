@@ -36,16 +36,21 @@ def _filter(dm):
 
 def descriptives(dm):
 
-	l = [['pp', 'rt', 'rtn', 'resp', 'nchar', 'nresp']]
+	l = [['pp', 'rt', 'resp', 'nchar', 'nfunc', 'chardur', 'funcdur']]
 	for i in dm.range():
-		sn, resp, rt = dm['subject_nr'][i], dm['full_response'][i], \
+		sn, full_resp, rt = dm['subject_nr'][i], dm['full_response'][i], \
 			dm['free_writing_time'][i]
-		rt = rt / 1000.
-		rtn = rt / len(resp)
-		print('%2d\t%.2f\t%.2f\t%s' % (sn, rt, rtn,
-			dm['free_writing_result'][i]))
 		resp = dm['free_writing_result'][i].replace('Space', ' ')
-		l.append([sn, rt, rtn, resp, ])
+		rt = rt / 1000. - (len(full_resp)+1)*1.185
+		nchar = len(full_resp) + 1
+		charDur = rt / (len(full_resp)+1)
+		funcDur = rt / len(resp)
+		nresp = len(resp)
+		print(full_resp)
+		print('%2d\t%s\t%.2f\t%d\t%d\t%.2f\t%.2f' % (sn, resp, rt, nchar, len(resp),
+			charDur, funcDur))
+		l.append([sn, rt, resp, nchar, len(resp), charDur, funcDur])
 	dm = DataMatrix(l)
 	dm.sort('pp')
 	print(dm)
+	dm.save('output/sentences.csv')

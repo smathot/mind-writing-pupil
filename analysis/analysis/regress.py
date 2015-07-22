@@ -36,14 +36,14 @@ def learningRegression(dm):
 	R = RBridge.R()
 	for phase in [1,2,3]:
 		_dm = dm.select('phase == %d' % phase, verbose=False)
-		_dm = _dm.select('block <= 6', verbose=False)
+		_dm = _dm.select('stabilize == 0', verbose=False)
 		R.load(_dm)
 		glm = R.glmerBinomial('correct ~ block + (1+block|subject_nr)')
 		glm._print(sign=4, title='Phase %d (correct)' % phase)
 		glm.save('output/glm.correct.phase%d.csv' % phase)
-		lm = R.lmer('loop_rt ~ block + (1+block|subject_nr)')
+		lm = R.lmer('loop_rt ~ block + (1+block|subject_nr)', lmerVar='lm1')
 		lm._print(sign=4, title='Phase %d (loop_rt)' % phase)
-		lm.save('output/lm.loop_rt.phase%d.csv' % phase)
+		lm.save('output/lm.loop_rt.phase%d.csv' % phase)		
 
 @yamldoc.validate
 def baselinePupilSizeRegression(dm):
@@ -59,7 +59,8 @@ def baselinePupilSizeRegression(dm):
 			type:	DataMatrix
 	"""
 
-	dm = dm.select('block <= 6', verbose=False)
+	# dm = dm.select('block <= 6', verbose=False)
+	dm = dm.select('s', verbose=False)
 	dm = dm.addField('baselinePupilSizeZ', dtype=float)
 	dm = dm.withinize('baselinePupilSize', 'baselinePupilSizeZ', 'subject_nr',
 		verbose=True, whiten=True)
@@ -73,3 +74,17 @@ def baselinePupilSizeRegression(dm):
 		'loop_rt ~ baselinePupilSizeZ + (1+baselinePupilSizeZ|subject_nr)')
 	lm._print(sign=4)
 	lm.save('output/lm.loop_rt.baselinePupilSizeZ.csv')
+
+def gazeStabilizationRegression(dm):
+
+	R = RBridge.R()
+	# _dm = dm.select('block <= 6', verbose=True)
+	R.load(dm)
+	glm = R.glmerBinomial(
+		'correct ~ stabilize + (1+stabilize|subject_nr)')
+	glm._print(sign=4)
+	# glm.save('output/glm.correct.baselinePupilSizeZ.csv')
+	lm = R.lmer(
+		'loop_rt ~ stabilize + (1+stabilize|subject_nr)')
+	lm._print(sign=4)
+	# lm.save('output/lm.loop_rt.baselinePupilSizeZ.csv')

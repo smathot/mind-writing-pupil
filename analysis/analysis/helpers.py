@@ -19,7 +19,6 @@ along with P0015.  If not, see <http://www.gnu.org/licenses/>.
 
 from analysis.constants import *
 
-@cachedDataMatrix
 def _filter(dm):
 
 	"""
@@ -54,6 +53,9 @@ def _filter(dm):
 	dm = dm.select('subject_nr > 0')
 	dm = dm.select('correct != "NA"')
 	print('N(trials) = %d' % len(dm))
+	# The duration of the animation was 1.185 seconds, and this should not be
+	# included in the RT
+	dm['loop_rt'] -= 1.185
 	return dm
 
 @yamldoc.validate
@@ -74,5 +76,7 @@ def descriptives(dm):
 		_dm = dm.select('phase == %d' % phase)
 		pm = PivotMatrix(_dm, ['subject_nr'], ['subject_nr'], dv='correct')
 		pm._print(u'Accuracy phase %d' % phase, sign=4)
+		pm.save('output/acc.phase%d.csv' % phase)
 		pm = PivotMatrix(_dm, ['subject_nr'], ['subject_nr'], dv='loop_rt')
 		pm._print(u'Response time phase %d' % phase, sign=4)
+		pm.save('output/rt.phase%d.csv' % phase)
