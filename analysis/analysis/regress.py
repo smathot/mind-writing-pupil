@@ -43,7 +43,10 @@ def learningRegression(dm):
 		glm.save('output/glm.correct.phase%d.csv' % phase)
 		lm = R.lmer('loop_rt ~ block + (1+block|subject_nr)', lmerVar='lm1')
 		lm._print(sign=4, title='Phase %d (loop_rt)' % phase)
-		lm.save('output/lm.loop_rt.phase%d.csv' % phase)		
+		lm.save('output/lm.loop_rt.phase%d.csv' % phase)
+		lm = R.lmer('loop_rt ~ block + (1|subject_nr)', lmerVar='lm1')
+		lm._print(sign=4, title='Phase %d (loop_rt; intercept only)' % phase)
+		lm.save('output/lm.loop_rt.intercept-only.phase%d.csv' % phase)
 
 @yamldoc.validate
 def baselinePupilSizeRegression(dm):

@@ -72,10 +72,9 @@ def tracePlot(dm, dv='correct', phase=1, color=blue[1], style='o-'):
 		acc = m.mean()
 		xData.append(block)
 		yData.append(acc)
-		se = 1.96*cm['mean'].std() / np.sqrt(len(cm))
-		yMin.append(acc-se)
-		yMax.append(acc+se)
-	plt.axvline(6.5, color='black', linestyle=':')
+		ci95 = 1.96*cm['mean'].std() / np.sqrt(len(cm))
+		yMin.append(acc-ci95)
+		yMax.append(acc+ci95)
 	plt.xlim(-2, 16)
 	plt.xticks([-1] + range(1, 13) + [14],
 		['Avg.'] + range(1, 13) + ['Stb.'])
@@ -85,19 +84,19 @@ def tracePlot(dm, dv='correct', phase=1, color=blue[1], style='o-'):
 	plt.fill_between(xData, yMin, yMax, color=color, alpha=.25)
 	# Averages of block 1 - 6
 	_dm = dm.select('stabilize == 0', verbose=False)
-	_dm = _dm.select('block < 7')
 	cm = _dm.collapse(['subject_nr'], dv)
 	acc = cm['mean'].mean()
-	se = 1.96*cm['mean'].std() / np.sqrt(len(cm))
+	ci95 = 1.96*cm['mean'].std() / np.sqrt(len(cm))
 	plt.plot(-1, acc, 'o', color=color)
-	plt.errorbar(-1, acc, yerr=se, color=color)
+	plt.errorbar(-1, acc, yerr=ci95, color=color, capsize=0)
+	# Gaze stabilizing block
 	_dm = dm.select('stabilize == 1')
 	cm = _dm.collapse(['subject_nr'], dv)
 	print(cm)
 	acc = cm['mean'].mean()
-	se = 1.96*cm['mean'].std() / np.sqrt(len(cm))
+	ci95 = 1.96*cm['mean'].std() / np.sqrt(len(cm))
 	plt.plot(14, acc, 'o', color=color)
-	plt.errorbar(14, acc, yerr=se, color=color)
+	plt.errorbar(14, acc, yerr=ci95, color=color, capsize=0)
 
 @yamldoc.validate
 def subplot(phase=1, dv='correct', shading=False):
@@ -137,11 +136,11 @@ def subplot(phase=1, dv='correct', shading=False):
 			if shading:
 				plt.axhspan(critical8/16., 1, color=green[1], alpha=.1)
 		plt.ylim(.0, 1.05)
-		plt.yticks(np.linspace(0, 1, 5), 100*np.linspace(0, 1, 5))
+		plt.yticks(np.linspace(0, 1, 5), [0, 25, 50, 75, 100])
 		plt.ylabel('Accuracy (%)')
 	else:
 		plt.subplot(2,3,phase+3)
-		plt.yticks(np.linspace(0, 60, 4))
+		plt.yticks(np.linspace(0, 50, 6))
 		plt.ylim(0,60)
 		plt.ylabel('Response time (s)')
 
@@ -168,11 +167,19 @@ def fullTracePlot(dm, suffix='', folder=None):
 	"""
 
 	Plot.new(Plot.w)
+	plt.subplots_adjust(wspace=0, hspace=0)
 	for phase in [1,2,3]:
 		subplot(dv='correct', phase=phase, shading=False)
 		tracePlot(dm, phase=phase, dv='correct')
+		plt.gca().xaxis.set_ticklabels([])
+		if phase != 1:
+			plt.gca().yaxis.set_ticklabels([])
+			plt.ylabel('')
 		subplot(dv='loop_rt', phase=phase)
-		tracePlot(dm.select('correct == 1'), phase=phase, dv='loop_rt')
+		tracePlot(dm, phase=phase, dv='loop_rt')
+		if phase != 1:
+			plt.gca().yaxis.set_ticklabels([])
+			plt.ylabel('')
 	Plot.save('fullTracePlot'+suffix)
 
 @yamldoc.validate

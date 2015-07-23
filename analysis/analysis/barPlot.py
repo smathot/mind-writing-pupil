@@ -45,16 +45,16 @@ def barPlot(dm, dv='correct', phase=1):
 	for _dm in dm.group('subject_nr'):
 		y = _dm[dv].mean()
 		x = int(_dm['subject_nr'][0])
-		se = _dm[dv].std() / np.sqrt(len(_dm))
+		ci95 = 1.96*_dm[dv].std() / np.sqrt(len(_dm))
 		plt.bar(x-.4, y, color=gray[1])
-		plt.errorbar(x, y, yerr=se, color='black', capsize=0)
-	dm = dm.select('block <= 6')
-	y = dm[dv].mean()
+		plt.errorbar(x, y, yerr=ci95, color='black', capsize=0)
+	cm = dm.collapse(['subject_nr'], dv)
+	y = cm['mean'].mean()
 	print('Overall y = %f' % y)
 	x = -1
-	se = _dm[dv].std() / np.sqrt(len(_dm))
+	ci95 = 1.96*cm['mean'].std() / np.sqrt(len(cm))
 	plt.bar(x-.4, y, color=blue[1])
-	plt.errorbar(x, y, yerr=se, color='black', capsize=0)
+	plt.errorbar(x, y, yerr=ci95, color='black', capsize=0)
 	maxX = int(np.max(_dm['subject_nr']))+1
 	plt.xlim(-2, maxX)
 	plt.xticks(range(-1, maxX), ['Overall', ''] + range(1, maxX))
@@ -72,11 +72,20 @@ def fullBarPlot(dm):
 			type:	DataMatrix
 	"""
 
+	dm = dm.select('stabilize == 0')
 	Plot.new(Plot.w)
+	plt.subplots_adjust(wspace=0, hspace=0)
 	for phase in [1,2,3]:
 		subplot(dv='correct', phase=phase)
 		barPlot(dm, phase=phase, dv='correct')
+		plt.gca().xaxis.set_ticklabels([])
+		if phase != 1:
+			plt.gca().yaxis.set_ticklabels([])
+			plt.ylabel('')
 		subplot(dv='loop_rt', phase=phase)
-		barPlot(dm.select('correct == 1'), phase=phase, dv='loop_rt')
+		barPlot(dm, phase=phase, dv='loop_rt')
 		plt.xlabel('Participant')
+		if phase != 1:
+			plt.ylabel('')
+			plt.gca().yaxis.set_ticklabels([])
 	Plot.save('fullBarPlot')

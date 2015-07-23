@@ -71,7 +71,7 @@ def descriptives(dm):
 			type:	DataMatrix
 	"""
 
-	dm = dm.select('block <= 6')
+	dm = dm.select('stabilize == 0')
 	for phase in (1,2,3):
 		_dm = dm.select('phase == %d' % phase)
 		pm = PivotMatrix(_dm, ['subject_nr'], ['subject_nr'], dv='correct')

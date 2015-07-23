@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 """
@@ -41,9 +42,9 @@ print('Stoll (LIS):', itr(22.5, 2, .70))
 
 print('Center spell:', itr(44.44, 30, .971))
 
-print('Phase 1:', itr(14.6845, 2., .9083))
-print('Phase 2:', itr(19.7127, 4., .9016))
-print('Phase 3:', itr(28.1214, 8., .8634))
+print('Phase 1:', itr(14.8705, 2., 0.8888))
+print('Phase 2:', itr(20.1867, 4., 0.9094))
+print('Phase 3:', itr(28.0483, 8., 0.8761))
 print('Phase 4 (raw):', itr(51.0775291309, 30., None))
 print('Phase 4 (use):', itr(75.2328265173, 30., None))
 
@@ -54,6 +55,8 @@ def itrPhase(phase, N):
 		rt = a[i,0]
 		P = a[i,1]
 		abr[i] = itr(rt, N, P)
+	print('Phase 1: Mean ITR: %.2f' % abr.mean())
+	print(abr)
 	return abr, abr.mean(), abr.std()
 
 Plot.new(size=Plot.xs)
