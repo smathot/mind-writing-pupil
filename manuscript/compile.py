@@ -32,8 +32,10 @@ build.pdfHeader = 'Manuscript in preparation [v%s; %s; %s]' % (version, \
 if '--snapshot' in sys.argv:
 	git.snapshot('md/__main__.md', msg=sys.argv[-1])
 else:
-	#build.DOC('md/__main__.md', 'latest-manuscript.doc')
+	build.DOC('md/__main__.md', 'latest-manuscript.doc')
+	build.ODT('md/__main__.md', 'latest-manuscript.odt')
 	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=False)
+	# build.HTML('md/__main__.md', 'latest-manuscript.html')
 	# build.zoteroApiKey = None
 	# build.setStyle('letter-classic')
 	# build.pdfHeader = 'Coverletter [v%s; %s; %s]' % (version,

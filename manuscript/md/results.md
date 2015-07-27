@@ -16,7 +16,7 @@ The response time was the interval between the start of the first selection cycl
 
 ### Pupillary responses
 
-%FigPupilTrace::a shows how pupil size evolves during one cycle (1.25 s) as a function of whether the attended stimulus changes from bright to dark (blue line) or dark to bright (orange line). This is data for one participant. Each cycle starts with a 500 ms transition period, during which the brightness of the stimuli smoothly changes. During transition, pupil size still reflects the pretransition brightness: pupil size is larger if the attended stimulus was dark (orange line), compared to bright (blue). Next, there is an adaptation period of 500 ms. During adaptation, the pupil gradually starts to reflect the new brightness of the attended stimulus, as reflected by the crossover of the blue and orange lines. Finally, there is a measurement period of 250 ms, during which the brightness effect (i.e. the difference between the orange and blue lines) is roughly stable. The median pupil size during this period is used for the analysis (see also Methods: Pupil-size measurement).
+%FigPupilTrace::a shows how pupil size evolves during one cycle (1.25 s) as a function of whether the attended stimulus changes from bright to dark (blue line) or dark to bright (orange line). This is data from one participant. Each cycle starts with a 500 ms transition period, during which the brightness of the stimuli smoothly changes. During transition, pupil size still reflects the pretransition brightness: pupil size is larger if the attended stimulus was dark (orange line), compared to bright (blue). Next, there is an adaptation period of 500 ms. During adaptation, the pupil gradually starts to reflect the new brightness of the attended stimulus, as reflected by the crossover of the blue and orange lines. Finally, there is a measurement period of 250 ms, during which the brightness effect (i.e. the difference between the orange and blue lines) is roughly stable. The median pupil size during this period is used for the analysis (see also Methods: Pupil-size measurement).
 
 As shown in in %FigPupilTrace::b, all participants show a qualitatively identical pattern. One participant (indicated in red) showed a weak effect; this was the only participant who did not reach our criteria for successful training (see Selection accuracy and speed).
 
@@ -25,12 +25,12 @@ figure:
  source: FigPupilTrace.svg
  id: FigPupilTrace
  caption: |
-  a) Example data from one participant. Pupil size as a function of whether the target changes from bright dark to bright (blue line) or from dark to bright (orange line). Shadings indicate standard deviation. b) The pupil size difference (i.e. orange - blue) for all participants. The participant indicated in red did not reach our criteria for successful training. The participant indicated by the arrow corresponds to the example shown in (a). All data is from Phase 1, in which participants selected one out of two stimuli.
+  a) Example data from one participant. Pupil size as a function of whether the target changes from bright to dark (blue line) or from dark to bright (orange line). Shadings indicate standard deviation. b) The pupil size difference (i.e. orange - blue) for all participants. The participant indicated in red did not reach our criteria for successful training. The participant indicated by the arrow corresponds to the example shown in (a). All data is from Phase 1, in which participants selected one out of two stimuli.
 --%
 
 ### Selection accuracy and speed
 
-The main results are shown in %FigFullBarPlot, which shows the mean selection accuracy and speed for each participant. This figure shows data for the first six blocks, which were completed by all participants.
+The main results are shown in %FigFullBarPlot, which shows the mean selection accuracy and speed for each participant.
 
 %--
 figure:
@@ -40,14 +40,14 @@ figure:
   Selection accuracy (top row) and speed (bottom row) for individual participants (gray bars) and across participants (blue bars). Horizontal dashed lines indicate chance level. a) Results for Phase 1. b) Results for Phase 2. c) Results for Phase 3. Error bars indicate 95% confidence intervals [within-subject where applicable, cf. @Cousineau2005].
 --%
 
-In Phase 1, the mean accuracy was 88.9% (chance = 50%; N = 10), with a mean selection time of 14.9 s. ITR was 2.58 bits/min (%FigITR). Nine out of ten participants met our criteria for successful training (see Methods: Training program). One participant did not meet our criteria, and therefore did not participate in subsequent phases (#10 in %FigFullBarPlot; red line in %FigPupilTrace::b). In Phase 2, the mean accuracy was 91.0% (chance = 25%; N = 9), with a mean selection time of 20.2 s. The ITR was 4.55 bits/min. All participants met our criteria for successful training. In Phase 3, the mean accuracy was 87.6% (chance = 12.5%; N = 9), with a mean selection time of 28.0 s. The ITR was 4.86 bits/min. Again, all participants met our criteria for successful training.
+In Phase 1, the mean accuracy was 88.9% (chance = 50%; *N* = 10), with a mean selection time of 14.9 s. ITR was 2.58 bits/min (%FigITR). Nine out of ten participants met our criteria for successful training (see Methods: Training program). One participant did not meet our criteria for success, and therefore did not participate in subsequent phases (#10 in %FigFullBarPlot; red line in %FigPupilTrace::b); however, this participant's accuracy was still 70%, which is often taken as the lower limit for useful HCI performance [@Astrand2014Selective;@Birbaumer2006Breaking]. In Phase 2, the mean accuracy was 91.0% (chance = 25%; *N* = 9), with a mean selection time of 20.2 s. The ITR was 4.55 bits/min. All participants met our criteria for successful training. In Phase 3, the mean accuracy was 87.6% (chance = 12.5%; *N* = 9), with a mean selection time of 28.0 s. The ITR was 4.86 bits/min. Again, all participants met our criteria for successful training.
 
 %--
 figure:
  source: FigITR.svg
  id: FigITR
  caption: |
-  The information-transfer rate (ITR) expressed in bits per minute. Bars indicate the mean ITR. Dots indicate individual participants.
+  The information-transfer rate (ITR) in bits per minute. Bars indicate the mean ITR. Dots indicate individual participants.
 --%
 
 ### Learning
@@ -56,7 +56,7 @@ figure:
 
 Looking at %FigFullTracePlot::a, some learning did appear to occur between blocks 1 and 2 of Phase 1; that is, participants needed a single block of training, before they reached a more-or-less stable level of performance.
 
-That there was little if any learning within one phase suggests that the ITR increase across phases (%FigITR) reflects a 'startup cost': At the start of each selection, it takes some time to locate, and shift attention towards, the target stimulus. This startup cost is proportionally less when there are more stimuli and selection takes longer; therefore, possibly, information transfer becomes more efficient with an increased number of stimuli.
+That there was little if any learning within phases suggests that the ITR increase across phases (%FigITR) reflects a 'startup cost': At the start of each selection, it takes some time to locate, and shift attention towards, the target stimulus. This startup cost is proportionally less when there are more stimuli and selection takes longer; therefore, possibly, information transfer becomes more efficient with an increased number of stimuli.
 
 %--
 figure:
@@ -70,7 +70,7 @@ figure:
 
 A crucial question is whether selection is fully independent of eye position. To test this, we conducted a GLMER on accuracy with gaze stabilization (on/ off) as fixed effect. This revealed no notable effect of gaze stabilization (z = 1.64, p = .102). An LMER on response times also revealed no effect (t = 1.39, p = .174). If anything, performance was slightly better when gaze-stabilization mode was enabled (see also %FigFullTracePlot in which gaze-stabilization blocks are marked as 'Stb.').
 
-Crucially, this shows that performance did not depend on small eye movements towards the attended stimuli, which participants could have made when gaze-stabilization was disabled. Our method is fully driven by covert attention.
+Crucially, this shows that performance did not depend on small eye movements toward the attended stimuli [cf. @EngbertKliegl2003], which participants could have made when gaze-stabilization was disabled. Our method is fully driven by covert attention.
 
 ## Phase 4: Free writing
 

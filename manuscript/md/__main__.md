@@ -1,6 +1,5 @@
 ---
-title: |
-  The Mind-Writing Pupil: A Human-Computer Interface Based on Decoding of Covert Attention through Pupillometry
+title: "The Mind-Writing Pupil: A Human-Computer Interface Based on Decoding of Covert Attention through Pupillometry"
 author:
   Sebastiaan Mathôt^1^, Jean-Baptiste Melmi^1^, Lotje van der Linden^1^, and Stefan Van der Stigchel^2^
 affiliation:
@@ -14,7 +13,7 @@ correspondence:
 
 %-- include: "md/abstract.md" --%
 
-Keywords: human-computer interface, pupillometry, covert visual attention
+*Keywords: human-computer interface, pupillometry, covert visual attention*
 
 ~
 
