@@ -13,7 +13,7 @@ correspondence:
 
 %-- include: "md/abstract.md" --%
 
-*Keywords: human-computer interface, pupillometry, covert visual attention*
+*Keywords: human-computer interface, brain-computer interface, pupillometry, covert visual attention, gaze independent*
 
 ~
 

@@ -12,11 +12,11 @@ Information-transfer rate (ITR) was determined using the following formula [@Yua
 
 Here, *ITR* is in bits per minute, *N* is the number of response options, *Acc* is proportion correct responses, and *RT* is the response time in seconds.
 
-The response time was the interval between the start of the first selection cycle and the end of the last selection cycle. Mean accuracy, response time, and IRT were first determined per participant, and then averaged to arrive at grand means (i.e. a means-of-means approach).
+The response time was the interval between the start of the first selection cycle and the end of the last selection cycle. Mean accuracy, response time, and ITR were first determined per participant, and then averaged to arrive at grand means (i.e. a means-of-means approach).
 
 ### Pupillary responses
 
-%FigPupilTrace::a shows how pupil size evolves during one cycle (1.25 s) as a function of whether the attended stimulus changes from bright to dark (blue line) or dark to bright (orange line). This is data from one participant. Each cycle starts with a 500 ms transition period, during which the brightness of the stimuli smoothly changes. During transition, pupil size still reflects the pretransition brightness: pupil size is larger if the attended stimulus was dark (orange line), compared to bright (blue). Next, there is an adaptation period of 500 ms. During adaptation, the pupil gradually starts to reflect the new brightness of the attended stimulus, as reflected by the crossover of the blue and orange lines. Finally, there is a measurement period of 250 ms, during which the brightness effect (i.e. the difference between the orange and blue lines) is roughly stable. The median pupil size during this period is used for the analysis (see also Methods: Pupil-size measurement).
+%FigPupilTrace::a shows how pupil size evolves during one cycle (1.25 s) as a function of whether the attended stimulus changes from bright to dark (blue line) or dark to bright (orange line). This is data from one participant. Each cycle starts with a 500 ms transition period, during which the brightness of the stimuli smoothly changes. During transition, pupil size still reflects the pretransition brightness: the pupil is larger if the attended stimulus was dark (orange line) than if it was bright (blue). Next, there is an adaptation period of 500 ms. During adaptation, the pupil gradually starts to reflect the new brightness of the attended stimulus, as reflected by the crossover of the blue and orange lines. Finally, there is a measurement period of 250 ms, during which the brightness effect (i.e. the difference between the orange and blue lines) is roughly stable. Median pupil size during this period is used for the analysis (see also Methods: Pupil-size measurement).
 
 As shown in in %FigPupilTrace::b, all participants show a qualitatively identical pattern. One participant (indicated in red) showed a weak effect; this was the only participant who did not reach our criteria for successful training (see Selection accuracy and speed).
 
@@ -52,18 +52,18 @@ figure:
 
 ### Learning
 
-%FigFullTracePlot shows how selection accuracy and speed evolve over time. To test whether significant learning occurred, we conducted a GLMER on accuracy with block (continuous) as fixed effect. This was done for each phase separately. There was no notable effect of block (i.e. no learning effect) in any phase: Phase 1 (z = 1.62, p = .104), Phase 2 (z = 1.30, p = .195), Phase 3 (z = 1.48, p = .139). An LMER on response time also did not reveal any notable effect of block: Phase 1 (t = 0.57, p = .565; intercept-only model), Phase 2 (t = 0.37, p = .721), Phase 3 (t = 0.73, p = 0.488).
+%FigFullTracePlot shows how selection accuracy and speed evolve over time. To test whether significant learning occurred, we conducted a GLMER on accuracy with block (continuous) as fixed effect. This was done for each phase separately. There was no notable effect of block (i.e. no learning effect) in any phase: Phase 1 (z = 1.62, p = .104), Phase 2 (z = 1.30, p = .195), Phase 3 (z = 1.48, p = .139). An LMER on response time also did not reveal any notable effect of block: Phase 1 (t = 0.57, p = .565; intercept-only model), Phase 2 (t = 0.37, p = .721), Phase 3 (t = 0.73, p = .488).
 
 Looking at %FigFullTracePlot::a, some learning did appear to occur between blocks 1 and 2 of Phase 1; that is, participants needed a single block of training, before they reached a more-or-less stable level of performance.
 
-That there was little if any learning within phases suggests that the ITR increase across phases (%FigITR) reflects a 'startup cost': At the start of each selection, it takes some time to locate, and shift attention towards, the target stimulus. This startup cost is proportionally less when there are more stimuli and selection takes longer; therefore, possibly, information transfer becomes more efficient with an increased number of stimuli.
+++That there was an ITR increase across phases (%FigITR), but little if any learning within phases could mean one of two things (or a combination). A first possibility is that learning did occur, but so slowly that it was only noticeable across phases (i.e. in the ITR analysis). A second possibility is that no notable learning occurred, and that the ITR increase across phases reflects a startup cost: At the start of each selection, it takes some time to locate, and shift attention towards, the target stimulus. This startup cost is proportionally less when there are more stimuli and selection takes longer; therefore, possibly, information transfer could become more efficient with an increased number of stimuli.++
 
 %--
 figure:
  source: FigFullTracePlot.svg
  id: FigFullTracePlot
  caption: |
-  Selection accuracy (top row) and speed (bottom row) as a function of block number. Blue lines indicate across-participant means during the first six blocks, which were completed by all participants. The size of the gray circles indicates how often a score occurred. Performance during gaze-stabilization blocks is indicated by Stb. Horizontal dotted lines indicate chance level. a) Results for Phase 1. b) Results for Phase 2. c) Results for Phase 3. Error bars indicate 95% confidence intervals [within-subject where applicable, cf. @Cousineau2005].
+  Selection accuracy (top row) and speed (bottom row) as a function of block number. Blue lines indicate across-participant means during the first six blocks, which were completed by all participants. The size of the gray circles indicates how often a score occurred. Performance during gaze-stabilization blocks is indicated by Stb. Horizontal dotted lines indicate chance level. a) Results for Phase 1. b) Results for Phase 2. c) Results for Phase 3. Error bars indicate 95% within-subject confidence intervals [cf. @Cousineau2005].
 --%
 
 ### Gaze independence
