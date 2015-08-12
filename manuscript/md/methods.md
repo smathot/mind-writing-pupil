@@ -20,14 +20,14 @@ Before each block, a nine-point eye-tracker calibration was performed. At the st
 
 The participant attended covertly to the target stimulus, while keeping gaze on the central fixation dot. The target was either indicated by a cue (Phase 1-3) or chosen by the participant (Phase 4). The cue was both visual (e.g., the letter 'A' shown on the display) and auditory (e.g., a synthesized French voice saying *Sélectionnez A*). The participant could replay the auditory cue at any moment by pressing the space bar. The trial ended when a selection was made (%FigParadigm::b, see Selection algorithm).
 
-++The display was designed to make the selection procedure as natural as possible. First, the size of the letters indicated how close they were to being selected; that is, a letter increased in size until it was selected (%FigParadigm::d). This type of sensory feedback is believed to increase performance in BCIs [e.g., @Astrand2014Selective]. Second, after a letter had been selected, it smoothly moved towards the display center. This animation the participants' sensation of *grabbing* letters with their mind's eye.++
+++The display was designed to make the selection procedure as intuitive as possible. First, the size of the letters indicated how close they were to being selected; that is, a letter increased in size until it was selected (%FigParadigm::d). This type of sensory feedback is believed to increase BCI/ HCI performance [e.g., @Astrand2014Selective]. Second, after a letter had been selected, it smoothly moved towards the display center. This animation increased the participants' sensation of *grabbing* letters with their mind's eye.++
 
 %--
 figure:
  id: FigParadigm
  source: FigParadigm.svg
  caption: |
-  a) Participants selected one of two (Phase 1), four (Phase 2), or eight (Phase 3) simultaneously presented stimuli. b) The target stimulus was indicated by a cue. This example shows a correct selection, because the selected stimulus ('a') matches the cue. c) During each cycle, the brightness of the stimulus gradually changed in 0.5 s, and then remained constant for 0.75. d) The size of the letters indicated how close they were to being selected.
+  a) Participants selected one of two (Phase 1), four (Phase 2), or eight (Phase 3) simultaneously presented stimuli. b) The target stimulus was indicated by a cue. This example shows a correct selection, because the selected stimulus ('a') matches the cue. c) During each cycle, the brightness of the stimulus gradually changed in 0.5 s, and then remained constant for 0.75. d) The size of the letters indicated how close they were to being selected. When a letter was selected, it smoothly moved toward the center.
 --%
 
 ## Control for eye position
@@ -58,7 +58,7 @@ Here, *PS(i)* is the median pupil size during the last 250 ms of cycle *i* (see 
 
 ## Training program
 
-The training program consisted of four phases. In Phases 1-3, participants were trained to make progressively more complicated selections. In Phase 4, participants wrote a short self-selected sentence using an extension of the technique trained in Phases 1-3. The experiment took about 10 hours, spread over multiple days.
+The training program consisted of four phases. In Phases 1-3, participants were trained to make progressively more complicated selections. In Phase 4, participants wrote a short self-selected sentence using an extension of the technique trained in Phases 1-3. Training took about 10 hours, spread over multiple days.
 
 ### Phases 1-3: Selecting a predefined stimulus
 
