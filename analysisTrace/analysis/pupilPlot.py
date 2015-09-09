@@ -159,7 +159,7 @@ def pupilPlotExample(dm):
 	"""
 	desc:
 		Creates the overall pupil-size plot for switch-to-bright and
-		switch-to-dark rounds, separately for each subject.
+		switch-to-dark rounds for participant 10.
 
 	arguments:
 		dm:

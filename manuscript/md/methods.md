@@ -1,14 +1,14 @@
 ## Preregistration
 
-This experiment was preregistered on Jan 21, 2015 (<https://osf.io/yvaqs/>). All deviations from the registration are indicated below.
+This experiment was preregistered on Jan 21, 2015 (<https://osf.io/yvaqs/>). Whenever a deviation from registration occurred, it is indicated in the sections below.
 
 ## Materials and availability
 
-Participant data, experimental software, and analysis scripts are available from: ++TODO++. This repository also includes a ready-to-use package for using our HCI with supported systems (currently tested with EyeLink and EyeTribe eye trackers, and Windows and Linux operating systems). ++A screencast of our method is available on-line: <https://youtu.be/cGfkD2opTz4>++
+Participant data, experimental software, and analysis scripts are available from: ++TODO++. This repository also includes a ready-to-use package for using our HCI with supported systems (currently tested with EyeLink and EyeTribe eye trackers, and Windows and Linux operating systems). A screencast of our method is available on-line: <https://youtu.be/cGfkD2opTz4>
 
 ## Participants
 
-Ten naive participants from the community of Aix-Marseille université were recruited (normal or uncorrected vision; 7 women; age range: 20-25). Participants received €90 for their participation (deviation from preregistration: We originally planned to pay €60). Participants provided written informed consent prior to the experiment. The study was conducted with approval of the ethics committee of Aix-Marseille Université (Ref.: 2014-12-03-09), and conformed to the Declaration of Helsinki (7^th^ rev.).
+Ten naive participants from the community of Aix-Marseille Université were recruited (normal or corrected vision; 7 women; age range: 20-25). Participants received €90 for their participation (deviation from preregistration: We originally planned to pay €60). Participants provided written informed consent prior to the experiment. The study was conducted with approval of the ethics committee of Aix-Marseille Université (Ref.: 2014-12-03-09), and conformed to the Declaration of Helsinki (7^th^ rev.).
 
 ## Software and apparatus
 
@@ -20,14 +20,14 @@ Before each block, a nine-point eye-tracker calibration was performed. At the st
 
 The participant attended covertly to the target stimulus, while keeping gaze on the central fixation dot. The target was either indicated by a cue (Phase 1-3) or chosen by the participant (Phase 4). The cue was both visual (e.g., the letter 'A' shown on the display) and auditory (e.g., a synthesized French voice saying *Sélectionnez A*). The participant could replay the auditory cue at any moment by pressing the space bar. The trial ended when a selection was made (%FigParadigm::b, see Selection algorithm).
 
-++The display was designed to make the selection procedure as intuitive as possible. First, the size of the letters indicated how close they were to being selected; that is, a letter increased in size until it was selected (%FigParadigm::d). This type of sensory feedback is believed to increase BCI/ HCI performance [e.g., @Astrand2014Selective]. Second, after a letter had been selected, it smoothly moved towards the display center. This animation increased the participants' sensation of *grabbing* letters with their mind's eye.++
+The display was designed to make the selection procedure as intuitive as possible. First, the size of the letters indicated how close they were to being selected; that is, a letter increased in size until it was selected (%FigParadigm::d). This type of sensory feedback is believed to increase BCI/ HCI performance [e.g., @Astrand2014Selective]. Second, after a letter had been selected, it smoothly moved towards the display center. This animation increased the participants' sensation of *grabbing* letters with their mind's eye.
 
 %--
 figure:
  id: FigParadigm
  source: FigParadigm.svg
  caption: |
-  a) Participants selected one of two (Phase 1), four (Phase 2), or eight (Phase 3) simultaneously presented stimuli. b) The target stimulus was indicated by a cue. This example shows a correct selection, because the selected stimulus ('a') matches the cue. c) During each cycle, the brightness of the stimulus gradually changed in 0.5 s, and then remained constant for 0.75. d) The size of the letters indicated how close they were to being selected. When a letter was selected, it smoothly moved toward the center.
+  a) Participants selected one of two (Phase 1), four (Phase 2), or eight (Phase 3) simultaneously presented stimuli. b) The target stimulus was indicated by a cue. This example shows a correct selection, because the selected stimulus ('a') matches the cue. c) During each cycle, the brightness of the stimulus gradually changed in 0.5 s, and then remained constant for 0.75 s. Pupil size was measured during the last 0.25 s. d) The size of the letters indicated how close they were to being selected. When a letter was selected, it smoothly moved toward the center.
 --%
 
 ## Control for eye position
@@ -45,7 +45,7 @@ figure:
  id: FigSelection
  source: FigSelection.svg
  caption: |
-  A schematic example of the selection procedure in the case of eight stimuli. Stimuli are grouped by the brightness of their background. One group is eliminated on each selection, after which the remaining group is subdivided anew. This procedure repeats until only a single stimulus remains.
+  A schematic example of the selection procedure in the case of eight stimuli. Stimuli are grouped by the brightness of their background. One group is eliminated on each selection, after which the remaining group is subdivided anew. This procedure repeats until a single stimulus remains.
 --%
 
 ## Pupil-size measurement
@@ -64,7 +64,7 @@ The training program consisted of four phases. In Phases 1-3, participants were 
 
 In Phase 1, participants were trained to select one of two simultaneously presented stimuli. Blocks consisted of 16 selections.
 
-Training was successful when participants reached: 100% accuracy after completing at least 6 bloks; or at least 80% accuracy on block 12. Thus, participants completed between 6 and 12 blocks. If training was unsuccessful, the phase was restarted with a more conservative threshold of 1.5 (default threshold = 1.375). If training then failed again, the experiment was aborted and training was considered unsuccessful for that participant. After training was successfully completed, participants completed a single block in gaze-stabilization mode (see: Control for eye position). Our criteria for success are stringent: Commonly, 70% accuracy is taken as a lower limit for a useful BCI/ HCI [e.g., @Astrand2014Selective;@Birbaumer2006Breaking].
+Training was successful when participants reached: 100% accuracy after completing at least 6 bloks; or at least 80% accuracy on block 12. Thus, participants completed between 6 and 12 blocks. If training was unsuccessful, the phase was restarted with a more conservative threshold of 1.5 (default threshold = 1.375). If training then failed again, the experiment was aborted and training was considered unsuccessful for that participant. After training was successfully completed, participants completed a single block in gaze-stabilization mode (see: Control for eye position). Our criteria for success were stringent: Commonly, 70% accuracy is taken as a lower limit for a useful BCI/ HCI [e.g., @Astrand2014Selective;@Birbaumer2006Breaking].
 
 Phases 2 and 3 were identical to Phase 1, except that participants selected one out of four (Phase 2) or eight (Phase 3) stimuli.
 
@@ -80,4 +80,4 @@ figure:
   The symbol-selection procedure used for free writing. Initially, there are eight groups of characters and control symbols ('backspace', 'space', and 'accept'). When one group has been selected (here 'abcd'), it unfolds into four individual symbols (here 'a', 'b', 'c', and 'd'), after which a final selection is made (here 'a').
 --%
 
-First, participants familiarized themselves with the layout of the virtual keyboard. Next, they practiced by writing the French word "ecrire" (without accent). Practice was completed when the word was written successfully, with a maximum of three attempts. Next, participants chose a short sentence (deviation from preregistration: several participants wanted to write a long sentence, and we therefore abandoned our initial maximum of 15 characters). Participants were given two opportunities to write this sentence. Writing was considered successful when the final sentence matched the specified sentence. The use of backspace to correct mistakes during text input was allowed.
+First, participants were given a print-out of the virtual keyboard to familiarize themselves with its layout. Next, they practiced by writing the French word "ecrire" (without accent). Practice was completed when the word was written successfully, with a maximum of three attempts. Next, participants chose a short sentence (deviation from preregistration: several participants wanted to write a long sentence, and we therefore abandoned our initial maximum of 15 characters). Participants were given two opportunities to write this sentence. Writing was considered successful when the final sentence matched the specified sentence. The use of backspace to correct mistakes during text input was allowed.
