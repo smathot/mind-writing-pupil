@@ -29,6 +29,8 @@ correspondence:
 
 %-- include: "results.md" --%
 
+~
+
 # Discussion
 
 %-- include: "discussion.md" --%
