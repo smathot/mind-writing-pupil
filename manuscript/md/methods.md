@@ -4,7 +4,7 @@ This experiment was preregistered on Jan 21, 2015 (<https://osf.io/yvaqs/>). Whe
 
 ## Materials and availability
 
-Participant data, experimental software, and analysis scripts are available from: ++TODO++. This repository also includes a ready-to-use package for using our HCI with supported systems (currently tested with EyeLink and EyeTribe eye trackers, and Windows and Linux operating systems). A screencast of our method is available on-line: <https://youtu.be/cGfkD2opTz4>
+Participant data, experimental software, and analysis scripts are available from: <https://github.com/smathot/mind-writing-pupil>. This repository also includes a ready-to-use package for using our HCI with supported systems (currently tested with EyeLink and EyeTribe eye trackers, and Windows and Linux operating systems). A screencast of our method is available on-line: <https://youtu.be/cGfkD2opTz4>
 
 ## Participants
 
