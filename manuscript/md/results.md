@@ -1,18 +1,19 @@
 ## Phases 1-3: Selecting a predefined stimulus
 
-### Criteria and statistical analyses
+In the first part of the training, participants learned to select one out two (Phase 1), four (Phase 2), or eight (Phase 3) letters (see %FigParadigm). Letters were presented within circles that oscillated between brightness and darkness in cycles of 1.25 s. Participants selected a letter by covertly attending to it, while keeping the eyes on the central fixation dot. We measured median pupil size during the last 0.25 s of each cycle, and used the following logic to determine which letter the participant intended to select: If pupil size decreased, the participant likely intended to select a letter that changed from darkness to brightness ('a' in %FigParadigm::b); if pupil size increased, the participant likely intended to select a letter that changed from brightness to darkness ('b' in %FigParadigm::b). The estimate of which letter the participant intended to select was updated after each cycle, and stopped when there was sufficient evidence for a reliable selection (%FigParadigm::c); therefore, selection times varied. If there were more than two letters, letters were divided into two groups, one of which was eliminated. This resulted in a step-wise selection procedure, in which eight letters were reduced to four, which were reduced to two, which were reduced to a single winner (%FigParadigm::d). (For details, see Methods.)
 
-No participants or selections were excluded from the analysis. Two blocks (32 selections) were lost due to technical problems. Two participants chose not to finish the experiment, and were replaced. In total, 257 blocks (4,112 selections) were included in the analysis.
+The display was designed to make the selection procedure as intuitive as possible. First, the size of the letters indicated how close they were to being selected; that is, a letter increased in size until it was selected. This type of sensory feedback is believed to increase BCI/ HCI performance [e.g., @Astrand2014Selective]. Second, after a letter had been selected, it smoothly moved towards the display center. This animation increased the participants' sensation of *grabbing* letters with their mind's eye.
 
-We analyzed accuracy using Generalized Linear Mixed-Effects Models (GLMER) with correctness (binomial) as dependent variable. We analyzed response times using Linear Mixed-Effects Models with response time as dependent variable. We included by-participant random intercepts and slopes (i.e. maximal random effects), unless this model failed to converge, in which case we included only random intercepts. Fixed effects were considered reliable when p < .05; however, we emphasize general patterns over significance of individual results. These analyses were conducted in R [@R+core+team2014], using the packages `lme4` [@Bates2015Lme4] and `lmerTest` [@Kuznetsova2015].
+Training was considered successful if a participant reached at least 80% selection accuracy at the end of the training phase. This is more stringent than the threshold of 70% accuracy that is often taken as a lower limit for a useful BCI/ HCI [e.g., @Astrand2014Selective;@Birbaumer2006Breaking].
 
-Information-transfer rate (ITR) is a measure of communication efficiency, and depends on both accuracy and speed. ITR was determined using the following formula [@Yuan2013InformationTransfer]:
-
-![](resources/formula ITR.png)
-
-Here, *ITR* is in bits per minute, *N* is the number of response options, *Acc* is proportion correct responses, and *RT* is the response time in seconds.
-
-The response time was the interval between the start of the first selection cycle and the end of the last selection cycle. Mean accuracy, response time, and ITR were first determined per participant, and then averaged to arrive at grand means (i.e. a means-of-means approach).
+%--
+figure:
+ id: FigParadigm
+ source: FigParadigm.svg
+ caption: |
+  The selection procedure. a) Participants selected one of two (Phase 1), four (Phase 2), or eight (Phase 3) simultaneously presented stimuli. b) During each cycle, the brightness of the stimulus gradually changed in 0.5 s, and then remained constant for 0.75 s. Pupil size was measured during the last 0.25 s.
+  c) The target stimulus was indicated by a cue. This example shows a correct selection, because the selected stimulus ('a') matches the cue. The size of the letters indicated how close they were to being selected. When a letter was selected, it smoothly moved toward the center. d) If there were more than two letters, letters were grouped by the brightness of their background. One group was eliminated on each selection, after which the remaining group was subdivided anew. This step-wise selection procedure repeated until a single winning stimulus remained.
+--%
 
 ### Pupillary responses
 
@@ -40,7 +41,7 @@ figure:
   Selection accuracy (top row) and speed (bottom row) for individual participants (gray bars) and across participants (blue bars). Horizontal dashed lines indicate chance level. a) Results for Phase 1. b) Results for Phase 2. c) Results for Phase 3. Error bars indicate 95% confidence intervals [within-subject where applicable, cf. @Cousineau2005].
 --%
 
-In Phase 1, the mean accuracy was 88.9% (chance = 50%; *N* = 10), with a mean selection time of 14.9 s. ITR was 2.58 bits/min (%FigITR). Nine out of ten participants met our criteria for successful training (see Methods: Training program). One participant did not meet our criteria for success, and therefore did not participate in subsequent phases (#10 in %FigFullBarPlot; red line in %FigPupilTrace::b); however, this participant's accuracy was still 70%, which is often taken as the lower limit for useful HCI performance [@Astrand2014Selective;@Birbaumer2006Breaking]. In Phase 2, the mean accuracy was 91.0% (chance = 25%; *N* = 9), with a mean selection time of 20.2 s. The ITR was 4.55 bits/min. All participants met our criteria for successful training. In Phase 3, the mean accuracy was 87.6% (chance = 12.5%; *N* = 9), with a mean selection time of 28.0 s. The ITR was 4.86 bits/min. Again, all participants met our criteria for successful training.
+In Phase 1, the mean accuracy was 88.9% (chance = 50%; *N* = 10), with a mean selection time of 14.9 s. ITR was 2.58 bits/min (%FigITR; for a definition of ITR, see Methods: Criteria and statistical analyses). Nine out of ten participants met our criteria for successful training (see Methods: Training program). One participant did not meet our criteria for success, and therefore did not participate in subsequent phases (#10 in %FigFullBarPlot; red line in %FigPupilTrace::b); however, this participant's accuracy was still 70%, which is often taken as the lower limit for useful HCI performance [@Astrand2014Selective;@Birbaumer2006Breaking]. In Phase 2, the mean accuracy was 91.0% (chance = 25%; *N* = 9), with a mean selection time of 20.2 s. The ITR was 4.55 bits/min. All participants met our criteria for successful training. In Phase 3, the mean accuracy was 87.6% (chance = 12.5%; *N* = 9), with a mean selection time of 28.0 s. The ITR was 4.86 bits/min. Again, all participants met our criteria for successful training.
 
 %--
 figure:
@@ -49,6 +50,14 @@ figure:
  caption: |
   The information-transfer rate (ITR) in bits per minute. Bars indicate the mean ITR. Dots indicate individual participants.
 --%
+
+### Gaze independence
+
+A crucial question is whether selection is fully independent of eye position. In each but the final block of each phase, the experiment was paused when fixation was lost (gaze deviated more than 2.6° from the display center for more than 10 ms), and continued when fixation was re-established. In the final block of each phase, the entire display was locked to gaze position (from now on: gaze-stabilization mode): When the eyes drifted slightly to the left, all stimuli except the central fixation dot would shift slightly to the left as well. This made sure that selection was not driven by small eye movements in the direction of the attended stimulus [cf. @Mathôt2014Exo;@Mathôt2013Plos].
+
+To test whether selection was independent of gaze, we conducted a GLMER on accuracy with gaze stabilization (on/ off) as fixed effect (for details of the statistical models, see Methods: Criteria and statistical analyses). This revealed no notable effect of gaze stabilization (z = 1.64, p = .102). An LMER on response times also revealed no effect (t = 1.39, p = .174). If anything, performance was slightly better when gaze-stabilization mode was enabled (see also %FigFullTracePlot in which gaze-stabilization blocks are marked as 'Stb.').
+
+Crucially, this shows that performance did not depend on small eye movements toward the attended stimuli [cf. @EngbertKliegl2003], which participants could have made when gaze-stabilization was disabled. Our method is fully driven by covert attention.
 
 ### Learning
 
@@ -64,13 +73,17 @@ figure:
   Selection accuracy (top row) and speed (bottom row) as a function of block number. Blue lines indicate across-participant means during the first six blocks, which were completed by all participants. The size of the gray circles indicates how often a score occurred. Performance during gaze-stabilization blocks is indicated by Stb. Horizontal dotted lines indicate chance level. a) Results for Phase 1. b) Results for Phase 2. c) Results for Phase 3. Error bars indicate 95% within-subject confidence intervals [cf. @Cousineau2005].
 --%
 
-### Gaze independence
-
-A crucial question is whether selection is fully independent of eye position. To test this, we conducted a GLMER on accuracy with gaze stabilization (on/ off) as fixed effect. This revealed no notable effect of gaze stabilization (z = 1.64, p = .102). An LMER on response times also revealed no effect (t = 1.39, p = .174). If anything, performance was slightly better when gaze-stabilization mode was enabled (see also %FigFullTracePlot in which gaze-stabilization blocks are marked as 'Stb.').
-
-Crucially, this shows that performance did not depend on small eye movements toward the attended stimuli [cf. @EngbertKliegl2003], which participants could have made when gaze-stabilization was disabled. Our method is fully driven by covert attention.
-
 ## Phase 4: Free writing
+
+In the final part of the training, participants used a virtual keyboard to write a self-selected sentence. This keyboard was similar to the displays used in Phases 1-3, but contained a full alphabet and several control symbols (see %FigFreeWriting). (For details, see Methods: Phase 4: Free writing.)
+
+%--
+figure:
+ id: FigFreeWriting
+ source: FigFreeWriting.svg
+ caption: |
+  The symbol-selection procedure used for free writing. Initially, there are eight groups of characters and control symbols ('backspace', 'space', and 'accept'). When one group has been selected (here 'abcd'), it unfolds into four individual symbols (here 'a', 'b', 'c', and 'd'), after which a final selection is made (here 'a').
+--%
 
 Eight out of nine participants successfully wrote a self-selected sentence (%TblFreeWriting). The remaining participant made a sentence that was correct except for one typo.
 
