@@ -59,6 +59,6 @@ The authors declare no competing financial interests.
 
 # Author contributions
 
-JBM collected the data. SM wrote the first draft of the manuscript. SM and LL conducted pilot testing of the method. All authors contributed to the design of the experiment, and revision of the manuscript.
+JBM collected the data. SM wrote the first draft of the manuscript. SM and LvdL performed pilot testing. All authors contributed to the design of the experiment, and revision of the manuscript.
 
 ~

@@ -21,11 +21,11 @@ import sys
 from academicmarkdown import build, git
 import myZoteroCredentials
 import time
-version = '1.1.4'
+version = '2.1.1'
 build.path += ['svg', 'md', 'tbl']
 build.zoteroApiKey = myZoteroCredentials.zoteroApiKey
 build.zoteroLibraryId = myZoteroCredentials.zoteroLibraryId
-build.setStyle('modern')
+build.setStyle('naturecomm')
 build.tableTemplate = 'pandoc'
 build.pdfHeader = 'Manuscript in preparation [v%s; %s; %s]' % (version, \
 	time.strftime('%c'), git.commitHash().decode())
@@ -34,7 +34,7 @@ if '--snapshot' in sys.argv:
 else:
 	# build.DOC('md/__main__.md', 'latest-manuscript.doc')
 	# build.ODT('md/__main__.md', 'latest-manuscript.odt')
-	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=True)
+	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=False)
 	# build.HTML('md/__main__.md', 'latest-manuscript.html')
 	# build.HTML('md/__main__.md', 'latest-manuscript.html', standalone=False)
 	# build.zoteroApiKey = None
