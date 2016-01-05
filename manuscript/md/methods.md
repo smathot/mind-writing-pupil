@@ -26,6 +26,8 @@ Letters are divided into two groups: bright and dark backgrounds. Each group has
 
 A crucial property of this algorithm is that it continues until there is sufficient evidence for reliable selection. Selection can be made faster but less accurate by reducing the threshold *T*, and slower but more accurate by increasing it.
 
+++The reason that we presented up to eight separate letters, even though the algorithm made only one-of-two selections, was to avoid users from having to re-orient their attention after each selection; that is, once users shifted their attention toward a to-be-selected letter, they simply kept attending to it, while the algorithm gradually pruned the non-attended letters through a series of one-of-two selections.++
+
 ## Pupil-size measurement
 
 The proportional pupil-size difference on cycle *i* (*PPSD(i)*) is defined as:
@@ -42,7 +44,7 @@ The training program consisted of four phases. In Phases 1-3, participants were 
 
 In Phase 1, participants were trained to select one of two simultaneously presented stimuli. Blocks consisted of 16 selections.
 
-Training was successful when participants reached: 100% accuracy after completing at least 6 bloks; or at least 80% accuracy on block 12. Thus, participants completed between 6 and 12 blocks. If training was unsuccessful, the phase was restarted with a more conservative threshold of 1.5 (default threshold = 1.375). If training then failed again, the experiment was aborted and training was considered unsuccessful for that participant. After training was successfully completed, participants completed a single block in gaze-stabilization mode. Our criteria for success were stringent: Commonly, 70% accuracy is taken as a lower limit for a useful BCI/ HCI [e.g., @Astrand2014Selective;@Birbaumer2006Breaking].
+Training was successful when participants reached: 100% accuracy after completing at least 6 ++blocks++; or at least 80% accuracy on block 12. Thus, participants completed between 6 and 12 blocks. If training was unsuccessful, the phase was restarted with a more conservative threshold of 1.5 (default threshold = 1.375). If training then failed again, the experiment was aborted and training was considered unsuccessful for that participant. After training was successfully completed, participants completed a single block in gaze-stabilization mode. Our criteria for success were stringent: Commonly, 70% accuracy is taken as a lower limit for a useful BCI/ HCI [e.g., @Astrand2014Selective;@Birbaumer2006Breaking].
 
 Phases 2 and 3 were identical to Phase 1, except that participants selected one out of four (Phase 2) or eight (Phase 3) stimuli.
 
