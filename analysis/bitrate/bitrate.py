@@ -33,8 +33,11 @@ def itr(rt, N, P):
 
 	return bps(N, P) * (60./rt)
 
-print('Pilot (Exp 5: SM):', itr(8.664-1.185, 2, None))
-print('Pilot (Exp 5: LL):', itr(6.578-1.185, 2, None))
+print('Pilot (eye movements):', itr(10, 8, None))
+
+# Subtract 1.185 for the winning animation
+print('Pilot (Exp 5: SM):', itr(6.72-1.185, 2, None))
+print('Pilot (Exp 5: LL):', itr(5.02-1.185, 2, None))
 
 
 print('Stoll (HC):', itr(16.5, 2, .90))

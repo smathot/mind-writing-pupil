@@ -47,10 +47,6 @@ France
 
 %-- include: "methods.md" --%
 
-# Appendix: Pilot experiments
-
-%-- include: "appendix.md" --%
-
 ~
 
 # Acknowledgements

@@ -26,22 +26,21 @@ build.path += ['svg', 'md', 'tbl']
 build.zoteroApiKey = myZoteroCredentials.zoteroApiKey
 build.zoteroLibraryId = myZoteroCredentials.zoteroLibraryId
 build.setStyle('naturecomm')
+build.docxRef = None
 build.tableTemplate = 'pandoc'
 build.pdfHeader = 'Manuscript in preparation [v%s; %s; %s]' % (version, \
 	time.strftime('%c'), git.commitHash().decode())
 if '--snapshot' in sys.argv:
+	git.exportFormats = 'pdf', 'docx'
 	git.snapshot('md/__main__.md', msg=sys.argv[-1])
 else:
-	# build.DOC('md/__main__.md', 'latest-manuscript.doc')
-	# build.ODT('md/__main__.md', 'latest-manuscript.odt')
-	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=False)
-	# build.HTML('md/__main__.md', 'latest-manuscript.html')
-	# build.HTML('md/__main__.md', 'latest-manuscript.html', standalone=False)
-	# build.zoteroApiKey = None
-	# build.setStyle('letter-classic')
-	# build.pdfHeader = 'Coverletter [v%s; %s; %s]' % (version,
-	# 	time.strftime('%c'), git.commitHash())
-	# build.PDF('md/__cover_letter__.md', 'coverletter-%s.pdf' % version,
-	# 	lineNumbers=False)
-	# build.DOC('md/__cover_letter__.md', 'coverletter-%s.doc' % version)
-	# build.ODT('md/__cover_letter__.md', 'coverletter-%s.odt' % version)
+	build.DOCX('md/__main__.md', 'latest-manuscript.docx')
+	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=True)
+	build.zoteroApiKey = None
+	build.PDF('md/__supplementary__.md', 'latest-supplementary.pdf')
+	build.DOCX('md/__supplementary__.md', 'latest-supplementary.docx')
+	build.setStyle('letter-classic')
+	build.pdfHeader = 'Coverletter [v%s; %s; %s]' % (version,
+		time.strftime('%c'), git.commitHash().decode())
+	build.PDF('md/__cover_letter__.md', 'coverletter-%s.pdf' % version)
+	build.DOCX('md/__cover_letter__.md', 'coverletter-%s.docx' % version)
