@@ -23,7 +23,7 @@ France
 
 ~
 
-Prior to the training program discussed in the main text, we conducted five pilot experiments to optimize the system's design. In all pilot experiments, two authors (SM and LvdL) served as participants. In each experiment, we varied one parameter, and then continued with the parameter value that resulted in fastest responses. We tested only one-of-two selections. These pilot experiments were purely exploratory; no statistical testing was performed, and no interpretations are provided. We report these pilot experiments for completeness, but their main goal was to aid in the design of the system.
+Prior to the training program discussed in the main text, we conducted five pilot experiments to optimize the system's design. In all pilot experiments, two authors (SM and LvdL) served as participants. (The authors only participated in the pilot experiments; for the training program described in the main text, all participants were naive.) In each experiment, we varied one parameter, and then continued with the parameter value that resulted in fastest responses. We tested only one-of-two selections. These pilot experiments were purely exploratory; no statistical testing was performed, and no interpretations are provided. We report these pilot experiments for completeness, but their main goal was to aid in the design of the system.
 
 ## Accuracy
 
@@ -44,11 +44,19 @@ figure:
 
 We tested the following geometric configurations (80 selections per configuration):
 
-- Horiz.: Two letters on the horizontal axis, left and right of fixation.
-- Up+: Two letters in the upper visual field with mirror-symmetric placeholders in the lower visual field (cf. %FigParadigm::a).
-- Down+: Two letters in the lower visual field with mirror-symmetric placeholders in the upper visual field (i.e. the vertical mirror image of Up+).
-- Up-: Two letters in the upper visual field (i.e. like Up+ but without symmetric placeholders).
-- Down-: Two letters in the lower visual field (i.e. like Down+ but without symmetric placeholders).
+%--
+figure:
+ id: FigPilotParadigmExp1
+ source: FigPilotParadigmExp1.svg
+ caption: The five stimulus configurations that were tested in Pilot Experiment 1.
+--%
+
+
+- Horizontal: Two letters on the horizontal axis, left and right of fixation (%FigPilotParadigmExp1::a).
+- Up+: Two letters in the upper visual field with mirror-symmetric placeholders in the lower visual field (%FigPilotParadigmExp1::b).
+- Down+: Two letters in the lower visual field with mirror-symmetric placeholders in the upper visual field (%FigPilotParadigmExp1::c).
+- Up-: Two letters in the upper visual field (%FigPilotParadigmExp1::d).
+- Down-: Two letters in the lower visual field (%FigPilotParadigmExp1::e).
 
 Configuration was varied within blocks. Based on response time (%FigPilotResults::a), we continued with the Up+ configuration.
 

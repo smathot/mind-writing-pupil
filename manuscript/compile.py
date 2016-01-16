@@ -21,11 +21,12 @@ import sys
 from academicmarkdown import build, git
 import myZoteroCredentials
 import time
-version = '2.2.1'
+version = '2.2.2'
 build.path += ['svg', 'md', 'tbl']
 build.zoteroApiKey = myZoteroCredentials.zoteroApiKey
 build.zoteroLibraryId = myZoteroCredentials.zoteroLibraryId
 build.setStyle('naturecomm')
+build.csl = 'plos.csl'
 build.docxRef = None
 build.tableTemplate = 'pandoc'
 build.pdfHeader = 'Manuscript in preparation [v%s; %s; %s]' % (version, \
