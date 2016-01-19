@@ -21,7 +21,7 @@ import sys
 from academicmarkdown import build, git
 import myZoteroCredentials
 import time
-version = '2.2.2'
+version = '2.2.3'
 build.path += ['svg', 'md', 'tbl']
 build.zoteroApiKey = myZoteroCredentials.zoteroApiKey
 build.zoteroLibraryId = myZoteroCredentials.zoteroLibraryId
@@ -45,3 +45,5 @@ else:
 		time.strftime('%c'), git.commitHash().decode())
 	build.PDF('md/__cover_letter__.md', 'coverletter-%s.pdf' % version)
 	build.DOCX('md/__cover_letter__.md', 'coverletter-%s.docx' % version)
+	build.PDF('md/__response_letter__.md', 'responseletter-%s.pdf' % version)
+	build.DOCX('md/__response_letter__.md', 'responseletter-%s.docx' % version)

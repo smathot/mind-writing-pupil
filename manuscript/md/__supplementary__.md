@@ -1,5 +1,5 @@
 ---
-title: "The Mind-Writing Pupil: A Human-Computer Interface Based on Decoding of Covert Attention through Pupillometry (Supplementary Materials)"
+title: "The Mind-Writing Pupil: A Human-Computer Interface Based on Decoding of Covert Attention through Pupillometry (S1 Appendix)"
 author:
   Sebastiaan Mathôt^1^\*, Jean-Baptiste Melmi^1^, Lotje van der Linden^1^, and Stefan Van der Stigchel^2^
 affiliation:
@@ -81,6 +81,10 @@ We tested the following display-background luminances (128 selections per size):
 Clearly, dark display backgrounds are more effective than bright display backgrounds (%FigPilotResults::e). However, the darkest display background that we tested (3.6 cd/m²) seemed to merge with the dark phase of the stimulus' backgrounds; that is, the stimulus' backgrounds seemed to disappear when they were dark. Therefore, we continued with a slightly less dark display background (13.0 cd/m²).
 
 ~
+
+# Supporting information
+
+__S1 Appendix.
 
 # Acknowledgements
 

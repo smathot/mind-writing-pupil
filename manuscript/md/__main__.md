@@ -49,6 +49,10 @@ France
 
 ~
 
+# Supporting information
+
+__S1 Appendix. Description of pilot experiments.__ Prior to the training program discussed in the main text, we conducted five pilot experiments to optimize the system's design.
+
 # Acknowledgements
 
 %-- include: "acknowledgements.md" --%
