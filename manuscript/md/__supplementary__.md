@@ -4,7 +4,7 @@ author:
   Sebastiaan Mathôt^1^\*, Jean-Baptiste Melmi^1^, Lotje van der Linden^1^, and Stefan Van der Stigchel^2^
 affiliation:
   - ^1^ Aix-Marseille University, CNRS, LPC UMR 7290, Marseille, France
-  - ^2^ Dept. of Experimental Psychology, Helmholtz Institute, Utrecht University, The Netherlands
+  - ^2^ Dept. of Experimental Psychology, Helmholtz Institute, Utrecht University, Utrecht, The Netherlands
   - \* Corresponding author
 ---
 
@@ -81,10 +81,6 @@ We tested the following display-background luminances (128 selections per size):
 Clearly, dark display backgrounds are more effective than bright display backgrounds (%FigPilotResults::e). However, the darkest display background that we tested (3.6 cd/m²) seemed to merge with the dark phase of the stimulus' backgrounds; that is, the stimulus' backgrounds seemed to disappear when they were dark. Therefore, we continued with a slightly less dark display background (13.0 cd/m²).
 
 ~
-
-# Supporting information
-
-__S1 Appendix.
 
 # Acknowledgements
 

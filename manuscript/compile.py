@@ -38,6 +38,8 @@ else:
 	build.DOCX('md/__main__.md', 'latest-manuscript.docx')
 	build.PDF('md/__main__.md', 'latest-manuscript.pdf', lineNumbers=True)
 	build.zoteroApiKey = None
+	build.pdfHeader = 'S1 Appendix [v%s; %s; %s]' % (version, \
+		time.strftime('%c'), git.commitHash().decode())
 	build.PDF('md/__supplementary__.md', 'latest-supplementary.pdf')
 	build.DOCX('md/__supplementary__.md', 'latest-supplementary.docx')
 	build.setStyle('letter-classic')
