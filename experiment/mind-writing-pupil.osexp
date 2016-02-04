@@ -291,7 +291,7 @@ define inline_script get_input
 			'MNOP'			: ['N', 'M', 'P', 'O'],
 			'QRST'			: ['R', 'Q', 'T', 'S'],
 			'UVWX'			: ['V', 'U', 'X', 'W'],
-			'YZ?Space'		: ['Z', 'Y', '?', 'Space'],
+			'YZ?Space'		: ['Z', 'Y', 'Question', 'Space'],
 			'DelFinish'		: ['Del', 'Finish'],
 			}
 		itemKeys = [
@@ -299,7 +299,7 @@ define inline_script get_input
 			'EFGH',
 			'ABCD',
 			'DelFinish',
-			'YZ?Space',
+			'YZQuestionSpace',
 			'UVWX',
 			'QRST',
 			'MNOP',
